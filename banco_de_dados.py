@@ -12,20 +12,20 @@ from tkinter import messagebox
 """
 
 def conectar():
-    conn = sqlite3.connect("BD.db")
+    conn = sqlite3.connect("Pet_Lov.db")
     cursor = conn.cursor()
     return conn,cursor
 
 # inserindo dados na tabela
-def Registrar_Usuario(login,email,senha,tipo):
+def Registrar_Usuario(nome,email,senha,tipo):
     """
-    LOGIN_usuario,EMAIL_usuario,SENHA_usuario,TIPO_usuario
+    NOME_usuario,EMAIL_usuario,SENHA_usuario,TIPO_usuario
     """
     conn,cursor = conectar()
     cursor.execute("""
-        INSERT INTO Usuarios (LOGIN_usuario,EMAIL_usuario,SENHA_usuario,TIPO_usuario)
+        INSERT INTO Usuarios (NOME_usuario,EMAIL_usuario,SENHA_usuario,TIPO_usuario)
         VALUES (?,?,?,?)
-    """, (login,email,senha,tipo))
+    """, (nome,email,senha,tipo))
     #
     conn.commit()
     conn.close()
@@ -142,12 +142,12 @@ def Verificar_Login(email,senha):
         messagebox.showerror(title="Login Info",message="Este usuário não está cadastrado!")
     '''
 
-def Verificar_Admin(login,senha):
+def Verificar_Admin(email,senha):
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT * FROM Usuarios 
-            WHERE (LOGIN_usuario = ? AND SENHA_usuario = ? AND TIPO_usuario = 'Administrador')
-        """,(login,senha))
+            WHERE (EMAIL_usuario = ? AND SENHA_usuario = ? AND TIPO_usuario = 'Administrador')
+        """,(email,senha))
     VerificaAdmin = cursor.fetchone()
     conn.close()
     

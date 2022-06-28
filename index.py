@@ -1,12 +1,7 @@
 from tkinter import *
 from PIL import Image, ImageTk
-
-# --------------------Função redimensionar img-------------------- #
-def redimensionar(img, x, y):
-        rimg = img.resize((x, y), Image.ANTIALIAS)
-        new_img = ImageTk.PhotoImage(rimg)
-        return new_img
-
+from IMG import redimensionar
+from login import Janela_Login
 # -----------------------Class Button----------------------- #
 
 class botoes:
@@ -20,13 +15,34 @@ class botoes:
         )
             
 class Janela_Index:
-    def __init__(self,privilegio):
+    def __init__(self):
+        # ------------------ Primeiro Chama a Tela de Login ---------------------- #
+        self.abrir_login()
+        
+    def abrir_login(self):
+        # ------------------ Cria nova tela da classe Login -------------------- #
+        self.tela_login = Janela_Login()
+        self.tela_login.botao_acesso.config(command=self.acessar_index)
+        self.tela_login.entrada_senha.et.bind('<Return>',self.acessar_index)
+        self.tela_login.root.mainloop()
+        
+    def acessar_index(self,event=None):
+        
+        # ------------------ Pega o nome e o privilegio do login e destroi a janela ----------- #
+        self.nome,self.privilegio = self.tela_login.acesso_login()
+        self.tela_login.root.destroy()
+        
+        # ------------------ Inicia a janela Index ------------------- #
         self.index = Tk()
-        self.privilegio = privilegio
         self.tela()
         self.inserir_elementos()
         self.index.mainloop()
     
+    def voltar_login(self):
+        # ------------------ Destroi a janela Index e chama novamente a funcao de abrir janela de login ---------- #
+        self.index.destroy()
+        self.abrir_login()
+        
     def tela(self):
         self.index.title("Love Pet")
         self.index.geometry("1024x600")
@@ -36,6 +52,7 @@ class Janela_Index:
 
     def sairProg(self):
         self.index.destroy()
+        #Janela_Login()
         
     # -------------------Funções para abrir as páginas-------------------#
     def Open_cadPes(self):
@@ -74,17 +91,34 @@ class Janela_Index:
             font=('Verdana', 40, 'bold')
         )
         self.nome_empresa.place(x=378, y=30)
+        
+         # -----------------------Nome do usuario----------------------- #
+        #nome = 'Evaldo'
+        self.nome_usuario = Label(self.index)
+        self.nome_usuario.configure(
+            text="Olá, " + self.nome,
+            bg='#086788',
+            fg='#FFFFFF',
+            font=('Verdana',10, 'bold')
+        )
+        self.nome_usuario.place(x=5, y=10)
 
+        #----------------------- Botao Sair --------------------------#
         self.sair_botao = Button(self.index)
-        self.sair_botao.configure(
-            image=self.img,
+        """image=self.img,
             bg='#C4C4C4',
             width=30,
             height=40,
-            relief=RAISED,
-            command=self.sairProg
+            relief=RAISED,"""
+        self.sair_botao.configure(
+            image=self.img,
+            bg='#086788',
+            width=30,
+            height=30,
+            relief=FLAT,
+            command=self.voltar_login
         )
-        self.sair_botao.place(x=978, y=20)
+        self.sair_botao.place(x=978, y=10)
 
         #-----------Menu---------#
         #   --lado esquerdo--    #
@@ -118,3 +152,4 @@ class Janela_Index:
         else:
             self.cadCli_but.bt.place(x=380, y=360)
     
+Janela_Index()

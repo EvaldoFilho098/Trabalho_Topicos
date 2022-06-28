@@ -1,8 +1,9 @@
-from distutils.log import error
 from tkinter import *
 from tkinter import messagebox
+from PIL import Image, ImageTk
 import banco_de_dados as BD
-from index import *
+from IMG import redimensionar
+#from index import *
 
 # -----------------------Class Entry----------------------- #
 class entrada:
@@ -16,13 +17,14 @@ class entrada:
         )
 
 
-class Tela_Login:
+class Janela_Login:
     def __init__(self):
         self.root = Tk()
+        #self.root = master
         self.tela()
         self.menus()
         self.inserir_elementos()
-        self.root.mainloop()
+        #self.root.mainloop()
 
     def tela(self):
         self.root.title("Login")
@@ -81,6 +83,7 @@ class Tela_Login:
 
         self.entrada_senha = entrada(self.frame_1)
         self.entrada_senha.et.configure(show='*')
+        
         self.entrada_senha.et.pack(side=TOP, padx=10, pady=10, anchor='center')
 
         # -----------------------Acesso----------------------- #
@@ -93,7 +96,7 @@ class Tela_Login:
             width=7,
             height=1,
             activebackground='black',
-            command=self.acesso_login
+            #command=self.acesso_login
         )
         self.botao_acesso.pack(side=TOP, padx=10, pady=10, anchor='center')
 
@@ -111,12 +114,27 @@ class Tela_Login:
             
         )
         self.registrar.pack(side=TOP, anchor='center')
+        
+        img = (Image.open('sair.png'))
+        self.img = redimensionar(img, 25, 25)
+        
+        self.sair_botao = Button(self.frame_1)
+        self.sair_botao.configure(
+            image=self.img,
+            bg='#086788',
+            width=30,
+            height=30,
+            relief=FLAT,
+            command=self.root.destroy
+        )
+        self.sair_botao.pack(side=TOP,pady=20, anchor='center')
 
-    def login_registro(self):
+    def login_registro(self,event=None):
+        
         # ---------------------- Tela de Login Aministrador ------------------ #
         self.admin = Toplevel(self.root)
         self.admin.title("ACESSO RESTRITO")
-        self.admin.geometry("330x115")
+        self.admin.geometry("330x135")
         self.admin.configure(bg="#086788")
         self.admin.resizable(False, False)
         self.admin.grab_set()
@@ -126,13 +144,13 @@ class Tela_Login:
         self.frame_lbls.configure(
             bg="#086788"
         )
-        self.frame_lbls.place(relx=0.0,rely=0.02,relheight=0.8,relwidth=0.55)
+        self.frame_lbls.place(relx=0.0,rely=0.22,relheight=0.7,relwidth=0.45)
         
         self.frame_ents = Frame(self.admin)
         self.frame_ents.configure(
             bg="#086788"
         )
-        self.frame_ents.place(relx=0.56,rely=0.02,relheight=0.8,relwidth=0.4)
+        self.frame_ents.place(relx=0.50,rely=0.22,relheight=0.7,relwidth=0.4)
         
         self.frame_botao = Frame(self.admin)
         self.frame_botao.configure(
@@ -141,22 +159,32 @@ class Tela_Login:
         self.frame_botao.place(relx=0.45,rely=0.75)
         
         # ----------------------- Login --------------------------- #
-        self.lbl_login_admin = Label(self.frame_lbls)
+        self.lbl_login_admin = Label(self.admin)
         self.lbl_login_admin.configure(
-            text="Usuário de Administrador:",
+            text="Login de Administrador",
+            bg="#086788",
+            fg="white",
+            font=("verdana",12,'bold')
+        )
+        self.lbl_login_admin.pack(side=TOP,anchor='center',pady=5)
+        
+        # ----------------------- Email --------------------------- #
+        self.lbl_email_admin = Label(self.frame_lbls)
+        self.lbl_email_admin.configure(
+            text="Email:",
             bg="#086788",
             fg="white",
             font=("verdana",10)
         )
-        self.lbl_login_admin.pack(side=TOP,anchor='e',pady=5)
+        self.lbl_email_admin.pack(side=TOP,anchor='e',pady=5)
 
         self.entrada_login_admin = Entry(self.frame_ents)
-        self.entrada_login_admin.pack(side=TOP,anchor='e',pady=5)
+        self.entrada_login_admin.pack(side=TOP,anchor='w',pady=5)
         
         # ----------------------- Senha --------------------------- #
         self.lbl_senha_admin = Label(self.frame_lbls)
         self.lbl_senha_admin.configure(
-            text="Senha de Administrador:",
+            text="Senha:",
             bg="#086788",
             fg="white",
             font=("verdana",10)
@@ -164,7 +192,8 @@ class Tela_Login:
         self.lbl_senha_admin.pack(side=TOP,anchor='e',pady=5)
 
         self.entrada_senha_admin = Entry(self.frame_ents,show='*')
-        self.entrada_senha_admin.pack(side=TOP,anchor='e',pady=5)
+        self.entrada_senha_admin.bind('<Return>',self.tela_registro)
+        self.entrada_senha_admin.pack(side=TOP,anchor='w',pady=5)
         
         # ----------------------- Entrar ------------------------- #
         self.bt_entrar_admin = Button(self.frame_botao)
@@ -182,7 +211,7 @@ class Tela_Login:
         self.bt_entrar_admin.pack(side=TOP, anchor='center')
     
         
-    def tela_registro(self):
+    def tela_registro(self,event=None):
         #Verificar se tem este usuário 
         login = self.entrada_login_admin.get()
         senha = self.entrada_senha_admin.get()
@@ -362,7 +391,7 @@ class Tela_Login:
         # Voltar Configuração Inicial
         self.frame_1.pack(side=TOP)
         
-    def realizar_registro(self):
+    def realizar_registro(self,event=None):
         
         txt = ""
         login = self.entrada_login_reg.get()
@@ -409,10 +438,8 @@ class Tela_Login:
         verifica = BD.Verificar_Login(get_email,get_senha)
         
         if verifica != None:
-            self.root.destroy()
-            
-            Janela_Index(verifica[4])
+            return (verifica[1],verifica[4])
         else:
-            print(verifica)
+            messagebox.showinfo(title="Login Info",message="LOGIN INVÁLIDO")
             
-Tela_Login()
+#Janela_Login()
