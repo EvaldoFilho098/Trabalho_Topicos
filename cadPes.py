@@ -5,7 +5,7 @@ window.title("Love Pet")
 window.geometry("1024x600")
 window.configure(bg="#086788")
 #window.resizable(False, False)
-
+#teste
 # -----------------------Class Entry----------------------- #
 
 
