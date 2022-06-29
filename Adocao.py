@@ -1,6 +1,9 @@
 from tkinter import filedialog as dlg
 from tkinter import *
 
+from TabelaAdotantes import VisualizarPessoas
+from TabelaPets import VisualizarPets
+
 #window = Tk()
 
 # -----------------------Class Entry----------------------- #
@@ -29,7 +32,7 @@ class textos:
 class Adocao:
     def __init__(self, master):
         self.root = Toplevel(master)
-        #self.root = master
+        #self.root = master 
         self.tela()
         self.adicionar_elementos()
         self.root.grab_set()
@@ -98,7 +101,8 @@ class Adocao:
         self.sel_adotante_bt.configure(
             text='Selecionar',
             bg='#C4C4C4',
-            font=('Verdana', 8, 'bold')
+            font=('Verdana', 8, 'bold'),
+            command=self.selecionar_adotante
         )
         self.sel_adotante_bt.pack(side=TOP, anchor='w',pady=14)
 
@@ -106,7 +110,8 @@ class Adocao:
         self.sel_pet_bt.configure(
             text='Selecionar',
             bg='#C4C4C4',
-            font=('Verdana', 8, 'bold')
+            font=('Verdana', 8, 'bold'),
+            command=self.selecionar_pet
         )
         self.sel_pet_bt.pack(side=TOP, anchor='w',pady=14)
         
@@ -124,6 +129,12 @@ class Adocao:
         )
         self.botao_cadastrar.place(relx=0.40,rely=0.90)
     
+    def selecionar_pet(self):
+        VisualizarPets(self.root)
+        
+    def selecionar_adotante(self):
+        VisualizarPessoas(self.root)
+        
     def format_data(self,event = None):
     
         text = self.data_visita_ent.et.get().replace("/", "")[:8]
