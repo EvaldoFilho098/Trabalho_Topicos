@@ -45,7 +45,7 @@ class CadPes:
         #self.root = master
         self.tela()
         self.adicionar_elementos()
-        self.root.mainloop()
+        self.root.grab_set()
     
     def tela(self):
         self.root.title("Love Pet")

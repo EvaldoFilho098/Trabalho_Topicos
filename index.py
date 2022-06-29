@@ -1,5 +1,6 @@
 from tkinter import *
 from PIL import Image, ImageTk
+from Adocao import Adocao
 from IMG import redimensionar
 from cadPes import CadPes
 from cadPet import CadPet
@@ -64,7 +65,7 @@ class Janela_Index:
 
 
     def Open_adoc(self):
-        print('calma bb')
+        Adocao(self.index)
 
 
     def Open_geren(self):
@@ -81,7 +82,6 @@ class Janela_Index:
 
 
     def Open_cadCli(self):
-        #Pronto
         CadCli(self.index)
 
     def inserir_elementos(self):
