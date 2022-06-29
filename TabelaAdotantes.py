@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from Tabelas import Tabelas
 
-root = Tk()
+#root = Tk()
 
 class Entradas:
     def __init__(self, container):
@@ -36,15 +36,14 @@ class Botoes:
         
 class VisualizarPessoas():
     def __init__(self,master):
-        self.root = master
+        #self.root = master
+        self.root = Toplevel(master)
         self.Tela()
         self.frames_da_tela()
         self.inserir_widgets()
         self.inserir_tabela()
-        try:
-            root.mainloop()
-        except:
-            self.root.mainloop()
+        self.root.grab_set()
+        #self.root.mainloop()
     
     def Tela(self):
          
@@ -100,10 +99,6 @@ class VisualizarPessoas():
         self.lb_cod_pess = Textos(self.frame_lbs,'Código Adotante:')
         self.lb_cod_pess.Texto.pack(side=TOP,anchor='e', pady=8)
         
-        #self.lb_Raca = Textos(self.frame_lbs,'Raça:')
-        #self.lb_Raca.Texto.pack(side=TOP,anchor='e', pady=4)
-        
-        
         #ENTRADAS
         self.et_Nome = Entradas(self.frame_ent)
         self.et_Nome.Entrada.pack(side=TOP,anchor='w',pady=10)
@@ -111,25 +106,18 @@ class VisualizarPessoas():
         self.et_cod_pess = Entradas(self.frame_ent)
         self.et_cod_pess.Entrada.pack(side=TOP,anchor='w',pady=10)
         
-        #self.et_Raca = Entradas(self.frame_ent)
-        #self.et_Raca.Entrada.pack(side=TOP,anchor='w',pady=5)
-        
         
         #BOTAO DE PESQUISAR
-        self.lb_Buscar = Textos(self.frame_1,'Buscar')
-        self.lb_Buscar.Texto.place(relx=0.33,rely=0.9,relwidth=0.15,relheight=0.15)
         self.bt_Buscar = Botoes(self.frame_1,'Buscar')
         self.bt_Buscar.Botao.config(command=self.Buscar)
-        self.bt_Buscar.Botao.place(relx=0.33,rely=0.9,relwidth=0.15,relheight=0.15)
+        self.bt_Buscar.Botao.place(relx=0.33,rely=0.88,relwidth=0.15,relheight=0.15)
         
         #BOTAO DE LIMPAR FILTROS
-        self.lb_Limpar = Textos(self.frame_1,'Limpar')
-        self.lb_Limpar.Texto.place(relx=0.50,rely=0.9,relwidth=0.15,relheight=0.15)
         self.bt_Limpar = Botoes(self.frame_1,'Limpar')
         self.bt_Limpar.Botao.config(command=self.Limpar)
-        self.bt_Limpar.Botao.place(relx=0.50,rely=0.9,relwidth=0.15,relheight=0.15)
+        self.bt_Limpar.Botao.place(relx=0.50,rely=0.88,relwidth=0.15,relheight=0.15)
         
-        #BOTAO DE LIMPAR FILTROS
+        #BOTAO DE SELECIONAR
         self.bt_Selecionar = Botoes(self.frame_2,'Selecionar')
         self.bt_Selecionar.Botao.config(command=self.Selecionar)
         self.bt_Selecionar.Botao.place(relx=0.45,rely=0.9)
@@ -191,4 +179,4 @@ class VisualizarPessoas():
         self.mostrar_na_tabela()
         
     
-VisualizarPessoas(root)
+#VisualizarPessoas(root)

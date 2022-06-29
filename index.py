@@ -5,6 +5,8 @@ from IMG import redimensionar
 from cadPes import CadPes
 from cadPet import CadPet
 from cadCli import CadCli
+from TabelaPets import VisualizarPets
+from TabelaAdotantes import VisualizarPessoas
 from login import Janela_Login
 # -----------------------Class Button----------------------- #
 
@@ -76,7 +78,7 @@ class Janela_Index:
 
 
     def Open_tabPet(self):
-        print('calma bb')
+        VisualizarPets(self.index)
 
 
     def Open_cadCli(self):
