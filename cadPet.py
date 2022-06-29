@@ -1,7 +1,7 @@
 from tkinter import filedialog as dlg
 from tkinter import *
 
-window = Tk()
+#window = Tk()
 
 # -----------------------Class Entry----------------------- #
 class entrada:
@@ -42,14 +42,10 @@ class opcoes:
 
 class CadPet:
     def __init__(self, master):
-        #self.root = Toplevel(master)
-        self.root = master
-        
-        #self.frame_geral = Frame(self.root)
-        #self.frame_geral.pack()
+        self.root = Toplevel(master)
         self.tela()
-        
         self.adicionar_elementos()
+        self.root.mainloop()
     
     def tela(self):
         self.root.title("Love Pet")
@@ -188,6 +184,6 @@ class CadPet:
         self.diretorio_img_lb.config(text = self.diretorio_img.split('/')[-1])
         self.diretorio_img_lb.pack(side=TOP,anchor='w')
         
-cadastro = CadPet(window)
+#cadastro = CadPet(window)
 
-window.mainloop()
+#window.mainloop()

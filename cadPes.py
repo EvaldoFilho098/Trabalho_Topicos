@@ -1,7 +1,6 @@
-from pydoc import TextRepr
 from tkinter import *
 
-window = Tk()
+#window = Tk()
 
 # -----------------------Class Entry----------------------- #
 class entrada:
@@ -42,14 +41,11 @@ class opcoes:
 
 class CadPes:
     def __init__(self, master):
-        #self.root = Toplevel(master)
-        self.root = master
-        
-        #self.frame_geral = Frame(self.root)
-        #self.frame_geral.pack()
+        self.root = Toplevel(master)
+        #self.root = master
         self.tela()
-        
         self.adicionar_elementos()
+        self.root.mainloop()
     
     def tela(self):
         self.root.title("Love Pet")
@@ -218,6 +214,6 @@ class CadPes:
         )
         self.botao_cadastrar.place(relx=0.40,rely=0.90)
         
-cadastro = CadPes(window)
+#cadastro = CadPes(window)
 
-window.mainloop()
+#window.mainloop()

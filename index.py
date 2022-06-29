@@ -1,6 +1,9 @@
 from tkinter import *
 from PIL import Image, ImageTk
 from IMG import redimensionar
+from cadPes import CadPes
+from cadPet import CadPet
+from cadCli import CadCli
 from login import Janela_Login
 # -----------------------Class Button----------------------- #
 
@@ -57,7 +60,7 @@ class Janela_Index:
     # -------------------Funções para abrir as páginas-------------------#
     def Open_cadPes(self):
         #Pronto
-        print('calma bb')
+        CadPes(self.index)
 
 
     def Open_adoc(self):
@@ -70,7 +73,7 @@ class Janela_Index:
 
     def Open_cadPet(self):
         #Pronto
-        print('calma bb')
+        CadPet(self.index)
 
 
     def Open_tabPet(self):
@@ -79,7 +82,7 @@ class Janela_Index:
 
     def Open_cadCli(self):
         #Pronto
-        print('calma bb')
+        CadCli(self.index)
 
     def inserir_elementos(self):
         img = (Image.open('sair.png'))
