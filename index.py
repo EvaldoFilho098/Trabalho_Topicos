@@ -56,6 +56,7 @@ class Janela_Index:
         
     # -------------------Funções para abrir as páginas-------------------#
     def Open_cadPes(self):
+        #Pronto
         print('calma bb')
 
 
@@ -68,6 +69,7 @@ class Janela_Index:
 
 
     def Open_cadPet(self):
+        #Pronto
         print('calma bb')
 
 
@@ -76,6 +78,7 @@ class Janela_Index:
 
 
     def Open_cadCli(self):
+        #Pronto
         print('calma bb')
 
     def inserir_elementos(self):
