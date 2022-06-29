@@ -60,7 +60,6 @@ class Janela_Index:
         
     # -------------------Funções para abrir as páginas-------------------#
     def Open_cadPes(self):
-        #Pronto
         CadPes(self.index)
 
 
@@ -73,7 +72,6 @@ class Janela_Index:
 
 
     def Open_cadPet(self):
-        #Pronto
         CadPet(self.index)
 
 
