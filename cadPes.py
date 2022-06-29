@@ -1,136 +1,223 @@
+from pydoc import TextRepr
 from tkinter import *
 
 window = Tk()
-window.title("Love Pet")
-window.geometry("1024x600")
-window.configure(bg="#086788")
-#window.resizable(False, False)
-#teste
-#
-#
+
 # -----------------------Class Entry----------------------- #
-
-
 class entrada:
     def __init__(self, container):
         self.et = Entry(container)
         self.et.configure(
             bg='#C4C4C4',
             fg='black',
-            width=30,
-            font=('Verdana', 15)
+            width=25,
+            font=('Verdana', 12)
         )
 
 # -----------------------Class Label----------------------- #
-
-
 class textos:
     def __init__(self, container):
         self.lb = Label(container)
         self.lb.configure(
             bg='#086788',
             fg='#FFFFFF',
-            font=('Verdana', 20, 'bold')
+            font=('Verdana', 14, 'bold')
         )
 
-# -----------------------Class Canvas----------------------- #
+class opcoes:
+    def __init__(self,container,variavel,valor,texto):
+        self.op = Radiobutton(container)
+        self.op.configure(
+                bg='#086788',
+                fg='white',
+                text= texto,
+                font=('Verdana', 12, 'bold'),
+                selectcolor="#086788",
+                activebackground='#086788',
+                activeforeground='white',
+                variable=variavel,
+                value= valor,
+                )
+# -----------------------Tela----------------------- #
 
-
-class Mypage(Frame):
+class CadPes:
     def __init__(self, master):
-        super().__init__(master)
-        self.pack()
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_propagate(False)
-
-        self.canvas = Canvas(self)
-        self.canvas.grid(row=0, column=0, sticky="news")
-
-        self.scroll_bar = Scrollbar(
-            self, orient=VERTICAL, command=self.canvas.yview)
-        self.scroll_bar.grid(row=0, column=1, sticky='ns')
-        self.canvas.config(yscrollcommand=self.scroll_bar.set)
+        #self.root = Toplevel(master)
+        self.root = master
         
-        self.internal_frame = Frame(self.canvas)
-        self.canvas.create_window(
-            (0, 0), window=self.internal_frame, anchor='nw')
-
-        self.__build()
-        self.internal_frame.update_idletasks()
-
-        self.config(width=2048, height=1200)
-        self.canvas.config(scrollregion=self.canvas.bbox("all"))
-
-
-    def __build(self):
+        #self.frame_geral = Frame(self.root)
+        #self.frame_geral.pack()
+        self.tela()
+        
+        self.adicionar_elementos()
+    
+    def tela(self):
+        self.root.title("Love Pet")
+        self.root.geometry("600x700")
+        self.root.configure(bg="#086788")
+        self.root.resizable(False, False)
+        
+    def adicionar_elementos(self):
         #---- criando a Janela ----#
-        janela = Frame(self.internal_frame)
-        janela.configure(
+        self.janela = Frame(self.root)
+        self.janela.configure(
             bg="#086788",
-            width=2048,
-            height=1200,
             highlightbackground="#086788",
             highlightthickness='0px'
         )
-        janela.pack(anchor='center')
+        self.janela.place(relx=0.0, rely=0.0,relwidth=1,relheight=1)
+        
+        self.frame_lbs = Frame(self.janela)
+        self.frame_lbs.configure(
+            bg="#086788",
+            #bd=4,
+            #highlightbackground="grey",
+            #highlightthickness='3px'
+        )
+        self.frame_lbs.place(relx=0.05, rely=0.1,relwidth=0.35,relheight=0.95)
+        
+        self.frame_ent = Frame(self.janela)
+        self.frame_ent.configure(
+            bg="#086788",
+            #bd=4,
+            #highlightbackground="grey",
+            #highlightthickness='3px'
+        )
+        self.frame_ent.place(relx=0.40, rely=0.1,relwidth=0.45,relheight=0.95)
 
     #---- titulo tela ----#
-
-        nome_empresa = Label(janela)
-        nome_empresa.configure(
+    
+        self.nome_empresa = Label(self.janela)
+        self.nome_empresa.configure(
             text="CADASTRO",
             bg='#086788',
             fg='#FFFFFF',
-            font=('Verdana', 40, 'bold')
+            font=('Verdana', 24, 'bold')
         )
-        nome_empresa.place(x=338, y=1)
-
+        self.nome_empresa.place(relx=0.32, rely=0.02)
+    
     #---- Criando Label's da tela ----#
-        nome_box = textos(janela)
-        nome_box.lb.configure(text='Nome:')
-        nome_box.lb.place(x=260, y=104)
+        self.nome_box = textos(self.frame_lbs)
+        self.nome_box.lb.configure(text='Nome:')
+        self.nome_box.lb.pack(side=TOP, anchor='e',pady=2)
 
-        cpf_box = textos(janela)
-        cpf_box.lb.configure(text='CPF:')
-        cpf_box.lb.place(x=291, y=146)
+        self.cpf_box = textos(self.frame_lbs)
+        self.cpf_box.lb.configure(text='CPF:')
+        self.cpf_box.lb.pack(side=TOP, anchor='e',pady=2)
 
-        email_box = textos(janela)
-        email_box.lb.configure(text='E-mail:')
-        email_box.lb.place(x=253, y=184)
+        self.email_box = textos(self.frame_lbs)
+        self.email_box.lb.configure(text='E-mail:')
+        self.email_box.lb.pack(side=TOP, anchor='e',pady=2)
 
-        tel_box = textos(janela)
-        tel_box.lb.configure(text='Telefone:')
-        tel_box.lb.place(x=220, y=224)
+        self.tel_box = textos(self.frame_lbs)
+        self.tel_box.lb.configure(text='Telefone:')
+        self.tel_box.lb.pack(side=TOP, anchor='e',pady=2)
+        
+        self.espaco_box = textos(self.frame_lbs) # -------------------- Espaco
+        self.espaco_box.lb.pack(side=TOP, anchor='e',pady=17)
+        
+        self.rua_box = textos(self.frame_lbs)
+        self.rua_box.lb.configure(text='Rua:')
+        self.rua_box.lb.pack(side=TOP, anchor='e',pady=2)
+        
+        self.numero_box = textos(self.frame_lbs)
+        self.numero_box.lb.configure(text='Número:')
+        self.numero_box.lb.pack(side=TOP, anchor='e',pady=2)
+        
+        self.bairro_box = textos(self.frame_lbs)
+        self.bairro_box.lb.configure(text='Bairro:')
+        self.bairro_box.lb.pack(side=TOP, anchor='e',pady=2)
+        
+        self.cidade_box = textos(self.frame_lbs)
+        self.cidade_box.lb.configure(text='Cidade:')
+        self.cidade_box.lb.pack(side=TOP, anchor='e',pady=2)
+        
+        self.espaco_2box = textos(self.frame_lbs) # -------------------- Espaco
+        self.espaco_2box.lb.pack(side=TOP, anchor='e')
 
-        senh_box = textos(janela)
-        senh_box.lb.configure(text='Crie uma senha:')
-        senh_box.lb.place(x=116, y=284)
+        self.tipo_box = textos(self.frame_lbs)
+        self.tipo_box.lb.configure(text='Tipo de Cadastro:')
+        self.tipo_box.lb.pack(side=TOP, anchor='e',pady=3)
+        
+        self.espaco_3box = textos(self.frame_lbs) # -------------------- Espaco
+        self.espaco_3box.lb.pack(side=TOP, anchor='e',pady=30)
+        
+        self.senh_box = textos(self.frame_lbs)
+        self.senh_box.lb.configure(text='Crie uma senha:')
+        self.senh_box.lb.pack(side=TOP, anchor='e',pady=2)
 
-        senConf_box = textos(janela)
-        senConf_box.lb.configure(text='Confirme a senha:')
-        senConf_box.lb.place(x=86, y=324)
-
+        self.senConf_box = textos(self.frame_lbs)
+        self.senConf_box.lb.configure(text='Confirme a senha:')
+        self.senConf_box.lb.pack(side=TOP, anchor='e',pady=2)
+        
+        # ------------Endereco---------
+        self.lbl_endereco = textos(self.janela)
+        self.lbl_endereco.lb.configure(text='Endereço')
+        self.lbl_endereco.lb.place(relx=0.35, rely=0.33)
+        #------------------------------
+        
     #---- Criando Entry's da tela ----#
-        nome_ent = entrada(janela)
-        nome_ent.et.place(x=370, y=112)
+        self.nome_ent = entrada(self.frame_ent)
+        self.nome_ent.et.pack(side=TOP, anchor='w',pady=6)
 
-        cpf_ent = entrada(janela)
-        cpf_ent.et.place(x=370, y=152)
+        self.cpf_ent = entrada(self.frame_ent)
+        self.cpf_ent.et.pack(side=TOP, anchor='w',pady=6)
 
-        email_ent = entrada(janela)
-        email_ent.et.place(x=370, y=192)
+        self.email_ent = entrada(self.frame_ent)
+        self.email_ent.et.pack(side=TOP, anchor='w',pady=6)
 
-        tel_ent = entrada(janela)
-        tel_ent.et.place(x=370, y=232)
+        self.tel_ent = entrada(self.frame_ent)
+        self.tel_ent.et.pack(side=TOP, anchor='w',pady=6)
+        
+        self.espaco_ent = textos(self.frame_ent) # -------------------- Espaco
+        self.espaco_ent.lb.pack(side=TOP, anchor='w',pady=15)
+        
+        self.rua_ent = entrada(self.frame_ent)
+        self.rua_ent.et.pack(side=TOP, anchor='w',pady=6)
+        
+        self.numero_ent = entrada(self.frame_ent)
+        self.numero_ent.et.pack(side=TOP, anchor='w',pady=6)
+        
+        self.bairro_ent = entrada(self.frame_ent)
+        self.bairro_ent.et.pack(side=TOP, anchor='w',pady=6)
+        
+        self.cidade_ent = entrada(self.frame_ent)
+        self.cidade_ent.et.pack(side=TOP, anchor='w',pady=6)
+        
+        self.espaco_2ent = textos(self.frame_ent) # -------------------- Espaco
+        self.espaco_2ent.lb.pack(side=TOP, anchor='w',pady=2)
+        
+        self.var = StringVar()
+        self.tipo_voluntario = opcoes(self.frame_ent,self.var,'Voluntario','Voluntário')
+        self.tipo_voluntario.op.pack(side=TOP, anchor='w')
+        
+        self.tipo_Adotante = opcoes(self.frame_ent,self.var,'Adotante','Adotante')
+        self.tipo_Adotante.op.pack(side=TOP, anchor='w')
+        
+        self.tipo_Ambos = opcoes(self.frame_ent,self.var,'Ambos','Ambos')
+        self.tipo_Ambos.op.pack(side=TOP, anchor='w')
+        
+        self.espaco_3ent = textos(self.frame_ent) # -------------------- Espaco
+        self.espaco_3ent.lb.pack(side=TOP, anchor='w',pady=3)
 
-        sen_ent = entrada(janela)
-        sen_ent.et.place(x=370, y=292)
+        self.sen_ent = entrada(self.frame_ent)
+        self.sen_ent.et.config(show='*')
+        self.sen_ent.et.pack(side=TOP, anchor='w',pady=5)
 
-        senConf_ent = entrada(janela)
-        senConf_ent.et.place(x=370, y=332)
+        self.senConf_ent = entrada(self.frame_ent)
+        self.senConf_ent.et.config(show='*')
+        self.senConf_ent.et.pack(side=TOP, anchor='w',pady=5)
 
-
-cadastro = Mypage(window)
+    # -------- Botao de cadastrar ------------
+        
+        self.botao_cadastrar = Button(self.janela)
+        self.botao_cadastrar.configure(
+            text='Cadastrar',
+            bg='#C4C4C4',
+            font=('Verdana', 12, 'bold')
+        )
+        self.botao_cadastrar.place(relx=0.40,rely=0.90)
+        
+cadastro = CadPes(window)
 
 window.mainloop()
