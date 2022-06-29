@@ -51,7 +51,7 @@ class Mypage(Frame):
             self, orient=VERTICAL, command=self.canvas.yview)
         self.scroll_bar.grid(row=0, column=1, sticky='ns')
         self.canvas.config(yscrollcommand=self.scroll_bar.set)
-
+        
         self.internal_frame = Frame(self.canvas)
         self.canvas.create_window(
             (0, 0), window=self.internal_frame, anchor='nw')
@@ -61,6 +61,7 @@ class Mypage(Frame):
 
         self.config(width=2048, height=1200)
         self.canvas.config(scrollregion=self.canvas.bbox("all"))
+
 
     def __build(self):
         #---- criando a Janela ----#
