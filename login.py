@@ -137,6 +137,7 @@ class Janela_Login:
         self.admin.geometry("330x135")
         self.admin.configure(bg="#086788")
         self.admin.resizable(False, False)
+        self.admin.iconbitmap(default="Icones/Icone.ico")
         self.admin.grab_set()
         
         # ----------------------- Frames Para Posicionamento ----------------- #

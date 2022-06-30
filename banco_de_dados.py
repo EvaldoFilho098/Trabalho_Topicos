@@ -152,3 +152,13 @@ def Verificar_Admin(email,senha):
     conn.close()
     
     return VerificaAdmin
+
+def buscar_pet(id):
+    conn,cursor = conectar()
+    cursor.execute(""" 
+            SELECT * FROM Pet WHERE COD_pet = ? 
+        """,(str(id)))
+    result = cursor.fetchone()
+    conn.close()
+    
+    return result

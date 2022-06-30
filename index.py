@@ -54,6 +54,7 @@ class Janela_Index:
         self.index.geometry("1024x600")
         self.index.configure(bg="#086788")
         self.index.resizable(False, False)
+        self.index.iconbitmap(default="Icones/Icone.ico")
     # --------------------Função sair-------------------- #
 
     def sairProg(self):
