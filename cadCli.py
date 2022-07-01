@@ -1,5 +1,7 @@
-from tkinter import filedialog as dlg
+from tkinter import filedialog as dlg, messagebox
 from tkinter import *
+
+from banco_de_dados import Registrar_Clinica
 
 #window = Tk()
 
@@ -152,11 +154,24 @@ class CadCli:
         self.botao_cadastrar.configure(
             text='Cadastrar',
             bg='#C4C4C4',
-            font=('Verdana', 8, 'bold')
+            font=('Verdana', 8, 'bold'),
+            command=self.cadastrar
         )
         self.botao_cadastrar.place(relx=0.40,rely=0.90)
         
+    def cadastrar(self):
+        self.Nome = self.nome_ent.et.get()
+        self.CNPJ = self.cnpj_ent.et.get()
+        self.Telefone = self.telefone_ent.et.get()
+        self.Endereco = self.endereco_ent.et.get()
+        self.Servicos = [self.var_tosa.get(),self.var_castracao.get(),self.var_internacao.get()]
         
+        try:
+            Registrar_Clinica(self.Nome,self.CNPJ,self.Telefone,self.Endereco)
+            messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
+            self.root.destroy()
+        except:
+            messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
         
 #cadastro = CadCli(window)
 

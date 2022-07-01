@@ -32,15 +32,15 @@ def Registrar_Usuario(nome,email,senha,tipo):
 
     #return id
 
-def Registrar_Pessoa(nome,rua,num,bairro,cidade,tel,email,cpf,situacao):
+def Registrar_Pessoa(nome,rua,num,bairro,cidade,tel,email,cpf,tipo):
     """
-    NOME_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,EMAIL_pessoa,CPF_pessoa,SITUACAO_CAD_pessoa
+    NOME_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,EMAIL_pessoa,CPF_pessoa,TIPO_CAD_pessoa
     """
     conn,cursor = conectar()
     cursor.execute("""
-        INSERT INTO Cad_Pessoa (NOME_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,EMAIL_pessoa,CPF_pessoa,SITUACAO_CAD_pessoa)
+        INSERT INTO Cad_Pessoa (NOME_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,EMAIL_pessoa,CPF_pessoa,TIPO_CAD_pessoa)
         VALUES (?,?,?,?,?,?,?,?,?)
-    """, (nome,rua,num,bairro,cidade,tel,email,cpf,situacao))
+    """, (nome,rua,num,bairro,cidade,tel,email,cpf,tipo))
     
     conn.commit()
     conn.close()

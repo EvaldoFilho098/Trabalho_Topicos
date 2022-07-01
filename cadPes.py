@@ -1,5 +1,5 @@
 from tkinter import *
-
+from banco_de_dados import *
 #window = Tk()
 
 # -----------------------Class Entry----------------------- #
@@ -138,13 +138,13 @@ class CadPes:
         self.espaco_3box = textos(self.frame_lbs) # -------------------- Espaco
         self.espaco_3box.lb.pack(side=TOP, anchor='e',pady=30)
         
-        self.senh_box = textos(self.frame_lbs)
-        self.senh_box.lb.configure(text='Crie uma senha:')
-        self.senh_box.lb.pack(side=TOP, anchor='e',pady=2)
+        #self.senh_box = textos(self.frame_lbs)
+        #self.senh_box.lb.configure(text='Crie uma senha:')
+        #self.senh_box.lb.pack(side=TOP, anchor='e',pady=2)
 
-        self.senConf_box = textos(self.frame_lbs)
-        self.senConf_box.lb.configure(text='Confirme a senha:')
-        self.senConf_box.lb.pack(side=TOP, anchor='e',pady=2)
+        #self.senConf_box = textos(self.frame_lbs)
+        #self.senConf_box.lb.configure(text='Confirme a senha:')
+        #self.senConf_box.lb.pack(side=TOP, anchor='e',pady=2)
         
         # ------------Endereco---------
         self.lbl_endereco = textos(self.janela)
@@ -196,13 +196,13 @@ class CadPes:
         self.espaco_3ent = textos(self.frame_ent) # -------------------- Espaco
         self.espaco_3ent.lb.pack(side=TOP, anchor='w',pady=3)
 
-        self.sen_ent = entrada(self.frame_ent)
-        self.sen_ent.et.config(show='*')
-        self.sen_ent.et.pack(side=TOP, anchor='w',pady=5)
+        #self.sen_ent = entrada(self.frame_ent)
+        #self.sen_ent.et.config(show='*')
+        #self.sen_ent.et.pack(side=TOP, anchor='w',pady=5)
 
-        self.senConf_ent = entrada(self.frame_ent)
-        self.senConf_ent.et.config(show='*')
-        self.senConf_ent.et.pack(side=TOP, anchor='w',pady=5)
+        #self.senConf_ent = entrada(self.frame_ent)
+        #self.senConf_ent.et.config(show='*')
+        #self.senConf_ent.et.pack(side=TOP, anchor='w',pady=5)
 
     # -------- Botao de cadastrar ------------
         
@@ -210,9 +210,28 @@ class CadPes:
         self.botao_cadastrar.configure(
             text='Cadastrar',
             bg='#C4C4C4',
-            font=('Verdana', 12, 'bold')
+            font=('Verdana', 12, 'bold'),
+            command=self.cadastrar
         )
         self.botao_cadastrar.place(relx=0.40,rely=0.90)
+    
+    def cadastrar(self):
+        self.Nome = self.nome_ent.et.get()
+        self.CPF = self.cpf_ent.et.get()
+        self.Email = self.email_ent.et.get()
+        self.Telefone = self.tel_ent.et.get()
+        self.Rua = self.rua_ent.et.get()
+        self.Numero = self.numero_ent.et.get()
+        self.Bairro = self.bairro_ent.et.get()
+        self.Cidade = self.cidade_ent.et.get()
+        self.Tipo = self.var.get()
+        
+        try:
+            Registrar_Pessoa(self.Nome,self.Rua,self.Numero,self.Bairro,self.Cidade,self.Telefone,self.Email,self.CPF,self.Tipo)
+            messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
+            self.root.destroy()
+        except:
+            messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
         
 #cadastro = CadPes(window)
 

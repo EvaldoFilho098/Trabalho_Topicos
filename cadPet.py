@@ -1,5 +1,7 @@
-from tkinter import filedialog as dlg
+from tkinter import filedialog as dlg, messagebox
 from tkinter import *
+
+from banco_de_dados import Registrar_Pet
 
 #window = Tk()
 
@@ -168,7 +170,8 @@ class CadPet:
         self.botao_cadastrar.configure(
             text='Cadastrar',
             bg='#C4C4C4',
-            font=('Verdana', 8, 'bold')
+            font=('Verdana', 8, 'bold'),
+            command=self.cadastrar
         )
         self.botao_cadastrar.place(relx=0.40,rely=0.90)
         
@@ -184,6 +187,21 @@ class CadPet:
         self.diretorio_img_lb.config(text = self.diretorio_img.split('/')[-1])
         self.diretorio_img_lb.pack(side=TOP,anchor='w')
         
+    def cadastrar(self):
+        self.Nome = self.nome_ent.et.get()
+        self.Raca = self.raca_ent.et.get()
+        self.Genero = self.genero_ent.et.get()
+        self.Idade = self.idade_ent.et.get()
+        self.Status = self.var.get()
+        self.Foto_dir = self.diretorio_img
+        
+        try:
+            Registrar_Pet(self.Nome,self.Raca,self.Genero,self.Idade,self.Status,self.Foto_dir)
+            messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
+            self.root.destroy()
+        except:
+            messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
+            
 #cadastro = CadPet(window)
 
 #window.mainloop()
