@@ -43,8 +43,8 @@ class TextosInfos:
 class InfoPet:
     def __init__(self,master,id_pet):
         self.id_pet = id_pet
-        self.root = master
-        #self.root = Toplevel(master)
+        #self.root = master
+        self.root = Toplevel(master)
         
         self.tela()
         self.frames_tela()
@@ -52,8 +52,8 @@ class InfoPet:
         self.adicionar_elementos_frame_info1()
         self.adicionar_elementos_frame_info2()
         
-        self.root.mainloop()
-        #self.root.grab_set()
+        #self.root.mainloop()
+        self.root.grab_set()
     
     def tela(self):
         self.root.title("Infos")
@@ -220,5 +220,5 @@ class InfoPet:
         self.Tabela_Vets.Inserir(self.Lista)
 
     
-x = Tk()
-InfoPet(x,2)
+#x = Tk()
+#InfoPet(x,2)
