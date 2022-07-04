@@ -1,5 +1,7 @@
 import sqlite3
 from tkinter import messagebox
+
+from numpy import result_type
 """
     CREATE TABLE "Usuarios" (
 	"ID_usuario"	INTEGER NOT NULL UNIQUE,
@@ -112,11 +114,11 @@ def Registrar_Hospedagem(periodo,cod_pet,cod_lar):
 
 def Registrar_Atendimento(historico,valor,cod_clini,cod_pet):
     """
-    HISTORICO_proced, VALOR_proced, fk_Clinica_vet_COD_clini, fk_Pet_COD_pet
+    HISTORICO_proced, VALOR_proced, fk_Clinica_vet__COD_clini, fk_pet_COD_pet
     """
     conn,cursor = conectar()
     cursor.execute("""
-        INSERT INTO Procedimento_ATENDER (HISTORICO_proced, VALOR_proced, fk_Clinica_vet_COD_clini, fk_Pet_COD_pet)
+        INSERT INTO Procedimento_ATENDER (HISTORICO_proced, VALOR_proced, fk_Clinica_vet__COD_clini, fk_Pet_COD_pet)
         VALUES (?,?,?,?)
     """, (historico,valor,cod_clini,cod_pet))
     
@@ -159,6 +161,34 @@ def buscar_pet(id):
             SELECT * FROM Pet WHERE COD_pet = ? 
         """,(str(id)))
     result = cursor.fetchone()
+    conn.close()
+    
+    return result
+
+def buscar_historico_pet(id):
+    conn,cursor = conectar()
+    cursor.execute(""" 
+            SELECT * FROM Procedimento_ATENDER WHERE fk_Pet_COD_pet = ? 
+        """,(str(id)))
+    result_pet = cursor.fetchall()
+
+    for item in range(len(result_pet)):
+        cursor.execute(""" 
+                SELECT NOME_clini FROM Clinica_vet WHERE COD_clini = ? 
+            """,(str(result_pet[item][3])))
+        result = cursor.fetchall()
+        result_pet[item] = (result_pet[item][0],result[0][0],result_pet[item][1],result_pet[item][2])
+
+    conn.close()
+    
+    return result_pet
+
+def busca_clinicas():
+    conn,cursor = conectar()
+    cursor.execute(""" 
+            SELECT DISTINCT NOME_clini, COD_clini FROM Clinica_vet
+        """)
+    result = cursor.fetchall()
     conn.close()
     
     return result

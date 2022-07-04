@@ -1,10 +1,9 @@
 from tkinter import *
 from PIL import Image, ImageTk
+from CadConsulta import CadConsulta
 from IMG import redimensionar
-
-import awesometkinter as atk
-
-from banco_de_dados import buscar_pet
+from Tabelas import Tabelas
+import banco_de_dados as BD
 
 
 
@@ -50,7 +49,8 @@ class InfoPet:
         self.tela()
         self.frames_tela()
         self.pegar_infos()
-        self.adicionar_elementos()
+        self.adicionar_elementos_frame_info1()
+        self.adicionar_elementos_frame_info2()
         
         self.root.mainloop()
         #self.root.grab_set()
@@ -69,20 +69,32 @@ class InfoPet:
         self.frame_foto = Frame(self.root,bg="#086788")
         self.frame_foto.place(relx=0,rely=0.15,relheight=0.30,relwidth=1)
         
-        self.quadro_foto = atk.Frame3d(self.frame_foto,bg='white')
+        self.quadro_foto =Frame(self.frame_foto)
+        self.quadro_foto.config(
+            bg = 'white',
+            bd = 4,
+        )
         self.quadro_foto.place(relx=0.35,rely=0.0,relheight=0.9,relwidth=0.30)
         
         self.frame_infos = Frame(self.root,bg="#086788")
         self.frame_infos.place(relx=0,rely=0.45,relheight=0.50,relwidth=1)
         
-        self.infos_1 = atk.Frame3d(self.frame_infos,bg='white')
-        self.infos_1.place(relx=0.05,rely=0,relheight=0.9,relwidth=0.45)
+        self.infos_1 =Frame(self.frame_infos)
+        self.infos_1.config(
+            bg = 'white',
+            bd = 4,
+        )
+        self.infos_1.place(relx=0.05,rely=0,relheight=0.9,relwidth=0.35)
         
-        self.infos_2 = atk.Frame3d(self.frame_infos,bg='white')
-        self.infos_2.place(relx=0.50,rely=0,relheight=0.9,relwidth=0.45)
+        self.infos_2 =Frame(self.frame_infos)
+        self.infos_2.config(
+            bg = 'white',
+            bd = 4,
+        )
+        self.infos_2.place(relx=0.415,rely=0,relheight=0.9,relwidth=0.55)
     
     def pegar_infos(self):
-        dados = buscar_pet(self.id_pet)
+        dados = BD.buscar_pet(self.id_pet)
         self.Nome = dados[1]
         self.Raca = dados[2]
         self.Genero = dados[3]
@@ -92,13 +104,10 @@ class InfoPet:
             
         self.Status = dados[5]
         self.dir_Foto = dados[6]
-        print(dados)
+        #print(dados)
     
-    def adicionar_elementos(self):
+    def adicionar_elementos_frame_info1(self):
         
-        #self.Nome = 'Meg' #pegar do bd
-        #self.dir_Foto = 'Fotos\\wesley.jpg'
-        #self.dir_Foto = 'Fotos\\meg.jpg' #pegar do bd
         img = (Image.open(self.dir_Foto))
         self.Foto = ImageTk.PhotoImage(img)
         #self.Foto = redimensionar(img, 100,100)
@@ -110,42 +119,106 @@ class InfoPet:
         self.lbl_Foto = Label(self.quadro_foto,image=self.Foto)
         self.lbl_Foto.pack(side=TOP,anchor='center',pady=20)
         
-        
-        self.lbl_espaco = TextosInfos(self.infos_1,'')
-        self.lbl_espaco.texto.pack(side=TOP,anchor='w',padx=50,pady=5)
+        self.lbl_espaco = Label(self.infos_1,text='',font=('verdana',13),bg='white')
+        self.lbl_espaco.pack(side=TOP,anchor='w',padx=40)
         
         # -------------------------------- RACA ----------------------------------
         img = (Image.open('Icones\\raca.png'))
-        self.Icone_Raca = redimensionar(img,30,30)
+        self.Icone_Raca = redimensionar(img,28,28)
         self.lbl_Icone_Raca = Label(self.infos_1,bg='white',image=self.Icone_Raca)
-        self.lbl_Icone_Raca.place(relx=0.05,rely=0.20)
+        self.lbl_Icone_Raca.place(relx=0.05,rely=0.14)
         
         #self.Raca = 'Pitbull'
         self.lbl_Raca = TextosInfos(self.infos_1, self.Raca)
-        self.lbl_Raca.texto.pack(side=TOP,anchor='w',pady=10,padx=70)
+        self.lbl_Raca.texto.pack(side=TOP,anchor='w',pady=10,padx=60)
         
         # -------------------------------- IDADE ----------------------------------
         img = (Image.open('Icones\\idade.png'))
-        self.Icone_Idade = redimensionar(img,30,30)
+        self.Icone_Idade = redimensionar(img,28,28)
         self.lbl_Icone_Idade = Label(self.infos_1,bg='white',image=self.Icone_Idade)
-        self.lbl_Icone_Idade.place(relx=0.05,rely=0.40)
+        self.lbl_Icone_Idade.place(relx=0.05,rely=0.35)
         
         #self.Idade = '15 Anos'
         self.lbl_Idade = TextosInfos(self.infos_1, self.Idade)
-        self.lbl_Idade.texto.pack(side=TOP,anchor='w',pady=10,padx=70)
+        self.lbl_Idade.texto.pack(side=TOP,anchor='w',pady=10,padx=60)
         
         # -------------------------------- GENERO ----------------------------------
         img = (Image.open('Icones\\genero.png'))
-        self.Icone_Genero = redimensionar(img,30,30)
+        self.Icone_Genero = redimensionar(img,28,28)
         self.lbl_Icone_Genero = Label(self.infos_1,bg='white',image=self.Icone_Genero)
-        self.lbl_Icone_Genero.place(relx=0.05,rely=0.60)
+        self.lbl_Icone_Genero.place(relx=0.05,rely=0.55)
         
         #self.Genero = 'Fêmea'
         self.lbl_Genero = TextosInfos(self.infos_1, self.Genero)
-        self.lbl_Genero.texto.pack(side=TOP,anchor='w',pady=10,padx=70)
+        self.lbl_Genero.texto.pack(side=TOP,anchor='w',pady=10,padx=60)
+
+        # -------------------------------- STAUS ----------------------------------
+        img = (Image.open('Icones\\status1.png'))
+        self.Icone_Status = redimensionar(img,28,28)
+        self.lbl_Icone_Status = Label(self.infos_1,bg='white',image=self.Icone_Status)
+        self.lbl_Icone_Status.place(relx=0.05,rely=0.77)
         
+        self.lbl_Status = TextosInfos(self.infos_1, self.Status)
+        self.lbl_Status.texto.pack(side=TOP,anchor='w',pady=10,padx=60)
+
         self.botao_ok = Botoes(self.root,'Ok')
+        self.botao_ok.botao.config(command=self.root.destroy)
         self.botao_ok.botao.pack(side=BOTTOM,anchor='center',pady=10)
+    
+    def adicionar_elementos_frame_info2(self):
+
+        # -------------------------------- RACA ----------------------------------
+        img = (Image.open('Icones\\veterinario2.png'))
+        self.Vet = redimensionar(img,28,28)
+        self.lbl_Vet = Label(self.infos_2,bg='white',image=self.Vet,)
+        self.lbl_Vet.place(relx=0.0,rely=0.0)
+        
+        self.lbl_Vet = Label(self.infos_2, text='Histórico de Consultas', bg='white',font=('verdana',14,'bold'))
+        self.lbl_Vet.place(relx=0.055,rely=0.0)
+
+        self.inserir_tabela()
+        
+        img = (Image.open('Icones\\atualizar.png'))
+        self.Img_Atualizar= redimensionar(img,20,20)
+        self.botao_atualizar = Button(self.infos_2,image=self.Img_Atualizar)
+        self.botao_atualizar.config(command=self.atualizar_tabela,bg='#C4C4C4')
+        self.botao_atualizar.place(relx=0.9,rely=0.0,relheight=0.1,relwidth=0.05)
+
+        self.botao_add = Botoes(self.infos_2,'+')
+        self.botao_add.botao.config(command=self.nova_consulta)
+        self.botao_add.botao.place(relx=0.95,rely=0.0,relheight=0.1,relwidth=0.05)
+
+    def atualizar_tabela(self):
+        self.mostrar_na_tabela()
+
+    def nova_consulta(self):
+        CadConsulta(self.root,self.id_pet)
+
+    def inserir_tabela(self):
+        self.Tabela_Vets = Tabelas(self.infos_2,
+                                  colunas = ('ID','CLINICA','HISTORICO','VALOR'),
+                                  qtd_linhas = 5,
+                                  largura = 50,
+                                  lar_min = 50)
+        self.Tabela_Vets.Listagem.place(relx=0.0,rely=0.16,relwidth=0.982,relheight=0.8)
+        self.Tabela_Vets.Barra_Y.place(relx=0.984 ,rely=0.16,relheight=0.8)
+        self.Tabela_Vets.Barra_X.place(relx=0.0 ,rely=0.95,relwidth=0.982)
+
+        def Pegar_Infos(event):
+            nodeId_1 = self.Tabela_Vets.Listagem.focus()
+            id = self.Tabela_Vets.Listagem.item(nodeId_1)['values'][0]
+            #print(id)
+            #Infos(self.root,id)
+        
+        self.Tabela_Vets.Listagem.bind('<Double-1>',Pegar_Infos)
+        
+        self.mostrar_na_tabela()
+    
+    def mostrar_na_tabela(self,filtros={}): 
+        self.Tabela_Vets.Listagem.delete(*self.Tabela_Vets.Listagem.get_children())
+        self.Lista = BD.buscar_historico_pet(self.id_pet)
+        self.Tabela_Vets.Inserir(self.Lista)
+
     
 x = Tk()
 InfoPet(x,2)

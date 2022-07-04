@@ -31,6 +31,7 @@ class Janela_Login:
         self.root.geometry("1024x600")
         self.root.configure(bg="#086788")
         self.root.resizable(False, False)
+        self.root.iconbitmap(default="Icones/Icone.ico")
 
     # -----------------------Menus----------------------- #
     def menus(self):

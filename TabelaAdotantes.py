@@ -124,33 +124,33 @@ class VisualizarPessoas():
         
                
     def inserir_tabela(self):
-        self.Tabela_Agrs = Tabelas(self.frame_2,
+        self.Tabela_Pessoas = Tabelas(self.frame_2,
                                   colunas = ('ID','NOME','CPF','E-MAIL','ENDEREÇO','TIPO'),
                                   qtd_linhas = 20,
                                   largura = 120,
                                   lar_min = 50)
-        self.Tabela_Agrs.Listagem.place(relx=0,rely=0,relwidth=0.982,relheight=0.8)
-        self.Tabela_Agrs.Barra_Y.place(relx=0.984 ,rely=0,relheight=0.835)
-        self.Tabela_Agrs.Barra_X.place(relx=0.0 ,rely=0.799,relwidth=0.982)
+        self.Tabela_Pessoas.Listagem.place(relx=0,rely=0,relwidth=0.982,relheight=0.8)
+        self.Tabela_Pessoas.Barra_Y.place(relx=0.984 ,rely=0,relheight=0.835)
+        self.Tabela_Pessoas.Barra_X.place(relx=0.0 ,rely=0.799,relwidth=0.982)
 
         def Pegar_Infos(event):
-            nodeId_1 = self.Tabela_Agrs.Listagem.focus()
-            id = self.Tabela_Agrs.Listagem.item(nodeId_1)['values'][0]
+            nodeId_1 = self.Tabela_Pessoas.Listagem.focus()
+            id = self.Tabela_Pessoas.Listagem.item(nodeId_1)['values'][0]
             #Infos(self.root,id)
         
-        self.Tabela_Agrs.Listagem.bind('<Double-1>',Pegar_Infos)
+        self.Tabela_Pessoas.Listagem.bind('<Double-1>',Pegar_Infos)
         
         self.mostrar_na_tabela()
     
     def mostrar_na_tabela(self,filtros={}): 
-        self.Tabela_Agrs.Listagem.delete(*self.Tabela_Agrs.Listagem.get_children())
+        self.Tabela_Pessoas.Listagem.delete(*self.Tabela_Pessoas.Listagem.get_children())
         #self.Lista_AGRs = BD.Select_Columns(
         #    colunas=('ID_AGR','NOME','LOCAL','TELEFONE','EMAIL','TERMO','ACMETA','SOLUTI'),
         #    tabela='AGR',
         #    filtros=filtros,
         #    )
         self.Lista = [('1','2','3','4','5','6')]
-        self.Tabela_Agrs.Inserir(self.Lista)
+        self.Tabela_Pessoas.Inserir(self.Lista)
     
     def Selecionar(self):
         pass

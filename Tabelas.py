@@ -40,8 +40,8 @@ class Tabelas:
         lista precisa ser uma lista de tuplas
         """
         try:
-            for i in lista:
-                item = tuple(i)
+            for item in lista:
+                #item = tuple(i)
                 self.Listagem.insert('','end', values=item)
         except:
             pass

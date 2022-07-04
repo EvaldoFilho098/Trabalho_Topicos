@@ -106,7 +106,7 @@ class CadCli:
         self.telefone_box = textos(self.frame_lbs)
         self.telefone_box.lb.configure(text='Telefone:')
         self.telefone_box.lb.pack(side=TOP, anchor='e',pady=2)
-
+ 
         self.endereco_box = textos(self.frame_lbs)
         self.endereco_box.lb.configure(text='Endereço:')
         self.endereco_box.lb.pack(side=TOP, anchor='e',pady=2)
