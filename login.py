@@ -116,7 +116,8 @@ class Janela_Login:
         )
         self.registrar.pack(side=TOP, anchor='center')
         
-        img = (Image.open('sair.png'))
+        # ------------------- Sair ---------------------- #
+        img = (Image.open('Icones\\sair.png'))
         self.img = redimensionar(img, 25, 25)
         
         self.sair_botao = Button(self.frame_1)

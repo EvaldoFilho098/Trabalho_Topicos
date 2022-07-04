@@ -1,9 +1,7 @@
 from tkinter import filedialog as dlg, messagebox
 from tkinter import *
+import banco_de_dados as BD
 
-from banco_de_dados import Registrar_Pet
-
-#window = Tk()
 
 # -----------------------Class Entry----------------------- #
 class entrada:
@@ -68,18 +66,12 @@ class CadPet:
         self.frame_lbs = Frame(self.janela)
         self.frame_lbs.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_lbs.place(relx=0.05, rely=0.2,relwidth=0.35,relheight=0.95)
         
         self.frame_ent = Frame(self.janela)
         self.frame_ent.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_ent.place(relx=0.40, rely=0.2,relwidth=0.45,relheight=0.95)
 
@@ -143,17 +135,15 @@ class CadPet:
         self.espaco_2ent.lb.pack(side=TOP, anchor='w',pady=2)
         
         self.var = StringVar()
-        self.tipo_voluntario = opcoes(self.frame_ent,self.var,'Voluntario','Voluntário')
-        self.tipo_voluntario.op.pack(side=TOP, anchor='w')
+        self.tipo_liberado = opcoes(self.frame_ent,self.var,'Liberado','Liberado Para Adoção')
+        self.tipo_liberado.op.pack(side=TOP, anchor='w')
         
-        self.tipo_Adotante = opcoes(self.frame_ent,self.var,'Adotante','Adotante')
-        self.tipo_Adotante.op.pack(side=TOP, anchor='w')
+        self.tipo_nao_liberado = opcoes(self.frame_ent,self.var,'Nao_Liberado','Não Liberado Para Adoção')
+        self.tipo_nao_liberado.op.pack(side=TOP, anchor='w')
         
-        self.tipo_Ambos = opcoes(self.frame_ent,self.var,'Ambos','Ambos')
-        self.tipo_Ambos.op.pack(side=TOP, anchor='w')
         
         self.espaco_3ent = textos(self.frame_ent) # -------------------- Espaco
-        self.espaco_3ent.lb.pack(side=TOP, anchor='w')
+        self.espaco_3ent.lb.pack(side=TOP, anchor='w',pady=16)
 
         self.sel_img_bt = Button(self.frame_ent)
         self.sel_img_bt.config(
@@ -188,20 +178,44 @@ class CadPet:
         self.diretorio_img_lb.pack(side=TOP,anchor='w')
         
     def cadastrar(self):
+        txt = ''
         self.Nome = self.nome_ent.et.get()
+        if self.Nome == '':
+            txt += 'Inserir o Nome do Pet!\n'
+            
         self.Raca = self.raca_ent.et.get()
+        if self.Raca == '':
+            txt += 'Inserir a Raça do Pet!\n'
+            
         self.Genero = self.genero_ent.et.get()
+        if self.Genero == '':
+            txt += 'Inserir o Gênero do Pet!\n'
+            
         self.Idade = self.idade_ent.et.get()
+        if self.Idade == '':
+            txt += 'Inserir a Idade do Pet!\n'
+            
         self.Status = self.var.get()
-        self.Foto_dir = self.diretorio_img
+        if self.Status == '':
+                txt += 'Selecione o Status do Pet!\n'
         
         try:
-            Registrar_Pet(self.Nome,self.Raca,self.Genero,self.Idade,self.Status,self.Foto_dir)
-            messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
-            self.root.destroy()
+            self.Foto_dir = self.diretorio_img
+            if self.Foto_dir == '':
+                txt += 'Escolher foto do Pet!\n'
         except:
-            messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
+            txt += 'Escolher foto do Pet!\n'
             
+        if txt == '':
+            try:
+                BD.Registrar_Pet(self.Nome,self.Raca,self.Genero,self.Idade,self.Status,self.Foto_dir)
+                messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
+                self.root.destroy()
+            except:
+                messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
+        else:
+            messagebox.showinfo(title="Cadastro Info",message=txt)
+            
+#window = Tk()
 #cadastro = CadPet(window)
-
 #window.mainloop()

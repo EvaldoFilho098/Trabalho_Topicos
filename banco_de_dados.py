@@ -86,15 +86,15 @@ def Registrar_Clinica(nome,cnpj,tel,endereco):
     conn.commit()
     conn.close()
     
-def Registrar_Adocao(data,cod_pet,cod_pessoa):
+def Registrar_Adocao(data,status,cod_pet,cod_pessoa):
     """
-    DATA_adocao,FK_Pet_COD_pet,FK_Cad_pessoa_COD_pessoa
+    DATA_adocao,STATUS_adocao,FK_Pet_COD_pet,FK_Cad_pessoa_COD_pessoa
     """
     conn,cursor = conectar()
     cursor.execute("""
-        INSERT INTO ADOTA_ADOCAO (DATA_adocao,FK_Pet_COD_pet,FK_Cad_pessoa_COD_pessoa)
-        VALUES (?,?,?)
-    """, (data,cod_pet,cod_pessoa))
+        INSERT INTO ADOTA_ADOCAO (DATA_adocao,STATUS_adocao,FK_Pet_COD_pet,FK_Cad_pessoa_COD_pessoa)
+        VALUES (?,?,?,?)
+    """, (data,status,cod_pet,cod_pessoa))
     
     conn.commit()
     conn.close()
@@ -192,3 +192,57 @@ def busca_clinicas():
     conn.close()
     
     return result
+
+def mostrar_adotantes(filtros={}):
+    conn,cursor = conectar()
+    comando = "SELECT COD_pessoa,NOME_pessoa,CPF_pessoa,EMAIL_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,TIPO_CAD_pessoa FROM Cad_pessoa"
+    
+    #print(comando)
+    if filtros != {}:
+        comando += " WHERE "
+    
+        for f in filtros.items():
+            if f[0] == "NOME_pessoa":
+                comando += "NOME_pessoa LIKE '%{}%' AND ".format(f[1])
+            else: 
+                comando += str(f[0]) + " = '" + str(f[1]) + "' AND "
+        
+        comando = comando[:-5]
+        
+    cursor.execute(comando)
+
+    lista = []
+    for linha in cursor.fetchall():
+        endereco = linha[4] + ', ' + str(linha[5]) + ', ' + linha[6] + ', ' + linha[7]
+        linha = (linha[0],linha[1],linha[2],linha[3], endereco, linha[8], linha[9])
+        lista.append(linha)
+
+    conn.close()
+    return lista
+
+def mostrar_pets(filtros={}):
+    conn,cursor = conectar()
+    comando = "SELECT COD_pet,NOME_pet,RACA_pet,GENERO_pet,IDADE_pet FROM Pet"
+    
+    #print(comando)
+    if filtros != {}:
+        comando += " WHERE "
+    
+        for f in filtros.items():
+            if f[0] == "NOME_pet":
+                comando += "NOME_pet LIKE '%{}%' AND ".format(f[1])
+            elif f[0] == "RACA_pet":
+                comando += "RACA_pet LIKE '%{}%' AND ".format(f[1])
+            else: 
+                comando += str(f[0]) + " = '" + str(f[1]) + "' AND "
+        
+        comando = comando[:-5]
+        
+    cursor.execute(comando)
+
+    lista = []
+    for linha in cursor.fetchall():
+        lista.append(linha)
+
+    conn.close()
+    return lista

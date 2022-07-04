@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
+from InfoPet import InfoPet
 from Tabelas import Tabelas
+import banco_de_dados as BD
 
 #root = Tk()
 
@@ -132,7 +134,7 @@ class VisualizarPets():
                
     def inserir_tabela(self):
         self.Tabela_Pets = Tabelas(self.frame_2,
-                                  colunas = ('ID','FOTO','NOME','RAÇA','IDADE'),
+                                  colunas = ('ID','NOME','RAÇA','GENERO','IDADE'),
                                   qtd_linhas = 20,
                                   largura = 120,
                                   lar_min = 50)
@@ -143,6 +145,7 @@ class VisualizarPets():
         def Pegar_Infos(event):
             nodeId_1 = self.Tabela_Pets.Listagem.focus()
             id = self.Tabela_Pets.Listagem.item(nodeId_1)['values'][0]
+            InfoPet(self.root,id)
             #Infos(self.root,id)
         
         self.Tabela_Pets.Listagem.bind('<Double-1>',Pegar_Infos)
@@ -151,30 +154,28 @@ class VisualizarPets():
     
     def mostrar_na_tabela(self,filtros={}): 
         self.Tabela_Pets.Listagem.delete(*self.Tabela_Pets.Listagem.get_children())
-        #self.Lista_AGRs = BD.Select_Columns(
-        #    colunas=('ID_AGR','NOME','LOCAL','TELEFONE','EMAIL','TERMO','ACMETA','SOLUTI'),
-        #    tabela='AGR',
-        #    filtros=filtros,
-        #    )
-        self.Lista = [('1','2','3','4','5')]
+        self.Lista = BD.mostrar_pets(filtros)
         self.Tabela_Pets.Inserir(self.Lista)
     
     def Selecionar(self):
-        pass
+        nodeId_1 = self.Tabela_Pets.Listagem.focus()
+        self.ID_Selecionado = self.Tabela_Pets.Listagem.item(nodeId_1)['values'][0]
+        self.root.destroy()
+        #return id
     
     def Buscar(self):
         busca = {}
         nome = self.et_Nome.Entrada.get()
         if nome != '':
-            busca['NOME'] = nome.upper()
+            busca['NOME_pet'] = nome.upper()
             
         cod_pet = self.et_Cod_Pet.Entrada.get()
         if cod_pet != '':
-            busca['ID'] = cod_pet.upper()
+            busca['COD_pet'] = cod_pet.upper()
             
         raca = self.et_Raca.Entrada.get()
         if raca :
-            busca['RACA'] ='ATIVO'
+            busca['RACA_pet'] = raca.upper()
         
         self.mostrar_na_tabela(busca)
     
@@ -185,5 +186,5 @@ class VisualizarPets():
         
         self.mostrar_na_tabela()
         
-    
+#root = Tk()
 #VisualizarPets(root)

@@ -1,6 +1,6 @@
 from tkinter import *
-from banco_de_dados import *
-#window = Tk()
+from tkinter import messagebox
+import banco_de_dados as BD
 
 # -----------------------Class Entry----------------------- #
 class entrada:
@@ -66,18 +66,12 @@ class CadPes:
         self.frame_lbs = Frame(self.janela)
         self.frame_lbs.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_lbs.place(relx=0.05, rely=0.1,relwidth=0.35,relheight=0.95)
         
         self.frame_ent = Frame(self.janela)
         self.frame_ent.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_ent.place(relx=0.40, rely=0.1,relwidth=0.45,relheight=0.95)
 
@@ -138,13 +132,6 @@ class CadPes:
         self.espaco_3box = textos(self.frame_lbs) # -------------------- Espaco
         self.espaco_3box.lb.pack(side=TOP, anchor='e',pady=30)
         
-        #self.senh_box = textos(self.frame_lbs)
-        #self.senh_box.lb.configure(text='Crie uma senha:')
-        #self.senh_box.lb.pack(side=TOP, anchor='e',pady=2)
-
-        #self.senConf_box = textos(self.frame_lbs)
-        #self.senConf_box.lb.configure(text='Confirme a senha:')
-        #self.senConf_box.lb.pack(side=TOP, anchor='e',pady=2)
         
         # ------------Endereco---------
         self.lbl_endereco = textos(self.janela)
@@ -196,13 +183,6 @@ class CadPes:
         self.espaco_3ent = textos(self.frame_ent) # -------------------- Espaco
         self.espaco_3ent.lb.pack(side=TOP, anchor='w',pady=3)
 
-        #self.sen_ent = entrada(self.frame_ent)
-        #self.sen_ent.et.config(show='*')
-        #self.sen_ent.et.pack(side=TOP, anchor='w',pady=5)
-
-        #self.senConf_ent = entrada(self.frame_ent)
-        #self.senConf_ent.et.config(show='*')
-        #self.senConf_ent.et.pack(side=TOP, anchor='w',pady=5)
 
     # -------- Botao de cadastrar ------------
         
@@ -216,23 +196,53 @@ class CadPes:
         self.botao_cadastrar.place(relx=0.40,rely=0.90)
     
     def cadastrar(self):
+        txt = ''
         self.Nome = self.nome_ent.et.get()
+        if self.Nome == '':
+            txt += 'Inserir o Nome!\n'
+            
         self.CPF = self.cpf_ent.et.get()
+        if self.CPF == '':
+            txt += 'Inserir o CPF!\n'
+            
         self.Email = self.email_ent.et.get()
+        if self.Email == '':
+            txt += 'Inserir o E-mail!\n'
+            
         self.Telefone = self.tel_ent.et.get()
+        if self.Telefone == '':
+            txt += 'Inserir o Telefone!\n'
+            
         self.Rua = self.rua_ent.et.get()
+        if self.Rua == '':
+            txt += 'Inserir a Rua!\n'
+            
         self.Numero = self.numero_ent.et.get()
+        if self.Numero == '':
+            txt += 'Inserir o Número!\n'
+            
         self.Bairro = self.bairro_ent.et.get()
+        if self.Bairro == '':
+            txt += 'Inserir o Bairro!\n'
+            
         self.Cidade = self.cidade_ent.et.get()
+        if self.Cidade == '':
+            txt += 'Inserir a Cidade!\n'
+            
         self.Tipo = self.var.get()
+        if self.Tipo == '':
+            txt += 'Selecionar o Tipo!\n'
         
-        try:
-            Registrar_Pessoa(self.Nome,self.Rua,self.Numero,self.Bairro,self.Cidade,self.Telefone,self.Email,self.CPF,self.Tipo)
-            messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
-            self.root.destroy()
-        except:
-            messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
+        if txt == '':
+            try:
+                BD.Registrar_Pessoa(self.Nome,self.Rua,self.Numero,self.Bairro,self.Cidade,self.Telefone,self.Email,self.CPF,self.Tipo)
+                messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
+                self.root.destroy()
+            except:
+                messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
+        else:
+            messagebox.showinfo(title="Cadastro Info",message=txt)
         
+#window = Tk()
 #cadastro = CadPes(window)
-
 #window.mainloop()

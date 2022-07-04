@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from Tabelas import Tabelas
-
+import banco_de_dados as BD
 #root = Tk()
 
 class Entradas:
@@ -144,37 +144,27 @@ class VisualizarPessoas():
     
     def mostrar_na_tabela(self,filtros={}): 
         self.Tabela_Pessoas.Listagem.delete(*self.Tabela_Pessoas.Listagem.get_children())
-        #self.Lista_AGRs = BD.Select_Columns(
-        #    colunas=('ID_AGR','NOME','LOCAL','TELEFONE','EMAIL','TERMO','ACMETA','SOLUTI'),
-        #    tabela='AGR',
-        #    filtros=filtros,
-        #    )
-        self.Lista = [('1','2','3','4','5','6')]
+        #self.Lista = [('1','2','3','4','5','6')]
+        self.Lista = BD.mostrar_adotantes(filtros)
+        #print(self.Lista_)
         self.Tabela_Pessoas.Inserir(self.Lista)
     
-    def Selecionar(self):
-        pass
     
     def Buscar(self):
         busca = {}
         nome = self.et_Nome.Entrada.get()
         if nome != '':
-            busca['NOME'] = nome.upper()
+            busca['NOME_pessoa'] = nome.upper()
             
         cod_pess = self.et_cod_pess.Entrada.get()
         if cod_pess != '':
-            busca['ID'] = cod_pess.upper()
-            
-        raca = self.et_Raca.Entrada.get()
-        if raca :
-            busca['RACA'] ='ATIVO'
+            busca['COD_pessoa'] = cod_pess.upper()
         
         self.mostrar_na_tabela(busca)
     
     def Limpar(self):
         self.et_Nome.Entrada.delete(0,END)
-        self.et_Cod_Pet.Entrada.delete(0,END)
-        self.et_Raca.Entrada.delete(0,END)
+        self.et_cod_pess.Entrada.delete(0,END)
         
         self.mostrar_na_tabela()
         

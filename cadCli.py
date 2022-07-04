@@ -1,9 +1,6 @@
 from tkinter import filedialog as dlg, messagebox
 from tkinter import *
-
-from banco_de_dados import Registrar_Clinica
-
-#window = Tk()
+import banco_de_dados as BD
 
 # -----------------------Class Entry----------------------- #
 class entrada:
@@ -51,7 +48,7 @@ class CadCli:
     
     def tela(self):
         self.root.title("Love Pet")
-        self.root.geometry("600x500")
+        self.root.geometry("600x300")
         self.root.configure(bg="#086788")
         self.root.resizable(False, False)
         
@@ -116,7 +113,7 @@ class CadCli:
 
         self.tipo_box = textos(self.frame_lbs)
         self.tipo_box.lb.configure(text='Serviços:')
-        self.tipo_box.lb.pack(side=TOP, anchor='e',pady=5)
+        #self.tipo_box.lb.pack(side=TOP, anchor='e',pady=5)
         
 
         
@@ -132,7 +129,8 @@ class CadCli:
 
         self.endereco_ent = entrada(self.frame_ent)
         self.endereco_ent.et.pack(side=TOP, anchor='w',pady=6)
-     
+        
+        '''
         self.espaco_2ent = textos(self.frame_ent) # -------------------- Espaco
         self.espaco_2ent.lb.pack(side=TOP, anchor='w',pady=2)
         
@@ -147,6 +145,7 @@ class CadCli:
         self.var_internacao = BooleanVar()
         self.servico_internacao = opcoes(self.frame_ent,self.var_internacao,'Internação')
         self.servico_internacao.op.pack(side=TOP, anchor='w')
+        '''
         
     # -------- Botao de cadastrar ------------
         
@@ -160,19 +159,34 @@ class CadCli:
         self.botao_cadastrar.place(relx=0.40,rely=0.90)
         
     def cadastrar(self):
+        txt = ''
         self.Nome = self.nome_ent.et.get()
-        self.CNPJ = self.cnpj_ent.et.get()
-        self.Telefone = self.telefone_ent.et.get()
-        self.Endereco = self.endereco_ent.et.get()
-        self.Servicos = [self.var_tosa.get(),self.var_castracao.get(),self.var_internacao.get()]
-        
-        try:
-            Registrar_Clinica(self.Nome,self.CNPJ,self.Telefone,self.Endereco)
-            messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
-            self.root.destroy()
-        except:
-            messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
-        
-#cadastro = CadCli(window)
+        if self.Nome == '':
+            txt += 'Insira o Nome da Clínica!\n'
 
+        self.CNPJ = self.cnpj_ent.et.get()
+        if self.CNPJ == '':
+            txt += 'Insira o CNPJ da Clínica!\n'
+            
+        self.Telefone = self.telefone_ent.et.get()
+        if self.Telefone == '':
+            txt += 'Insira o Telefone da Clínica!\n'
+            
+        self.Endereco = self.endereco_ent.et.get()
+        if self.Endereco == '':
+            txt += 'Insira do Endereço da Clínica!\n'
+        #self.Servicos = [self.var_tosa.get(),self.var_castracao.get(),self.var_internacao.get()]
+        
+        if txt == '':
+            try:
+                BD.Registrar_Clinica(self.Nome,self.CNPJ,self.Telefone,self.Endereco)
+                messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
+                self.root.destroy()
+            except:
+                messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
+        else:
+            messagebox.showinfo(title="Cadastro Info",message=txt)
+            
+#window = Tk()  
+#cadastro = CadCli(window)
 #window.mainloop()

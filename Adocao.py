@@ -1,10 +1,9 @@
-from tkinter import filedialog as dlg
+from tkinter import filedialog as dlg, messagebox
 from tkinter import *
-
+import banco_de_dados as BD
 from TabelaAdotantes import VisualizarPessoas
 from TabelaPets import VisualizarPets
 
-#window = Tk()
 
 # -----------------------Class Entry----------------------- #
 class entrada:
@@ -56,18 +55,12 @@ class Adocao:
         self.frame_lbs = Frame(self.janela)
         self.frame_lbs.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_lbs.place(relx=0.05, rely=0.2,relwidth=0.45,relheight=0.95)
         
         self.frame_ent = Frame(self.janela)
         self.frame_ent.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_ent.place(relx=0.50, rely=0.2,relwidth=0.45,relheight=0.95)
 
@@ -127,14 +120,67 @@ class Adocao:
             bg='#C4C4C4',
             font=('Verdana', 8, 'bold')
         )
-        self.botao_cadastrar.place(relx=0.40,rely=0.90)
+        self.botao_cadastrar.place(relx=0.435,rely=0.90)
     
-    def selecionar_pet(self):
-        VisualizarPets(self.root)
+        self.ID_Pet_Selecionado = ''
+        self.ID_Adotante_Selecionado = ''
+    
+    def cadastrar_adocao(self):
+        txt = ''
         
+        if self.ID_Adotante_Selecionado == '':
+            txt += 'Selecione um Adotante!\n'
+            
+        if self.ID_Pet_Selecionado == '':
+            txt += 'Selecione um Pet!\n'
+        
+        self.Data = self.data_visita_ent.et.get()
+        if self.Data == '':
+            txt += 'Insira uma Data para Visita!\n'
+        
+        if txt == '':
+            try:
+                BD.Registrar_Adocao(self.Data,'Em Analise',self.ID_Pet_Selecionado[0],self.ID_Adotante_Selecionado[0])
+                messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
+                self.root.destroy()
+            except:
+                messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
+        else:
+            messagebox.showinfo(title="Cadastro Info",message=txt)
+            
+    # ------------------ Selecionando Adotante ---------------------- #
     def selecionar_adotante(self):
-        VisualizarPessoas(self.root)
-        
+        self.visualizar_adotantes = VisualizarPessoas(self.root)
+        self.visualizar_adotantes.bt_Selecionar.Botao.config(command=self.botao_selecionar_adotante)
+    
+    def botao_selecionar_adotante(self):
+        try:
+            node_pessoa = self.visualizar_adotantes.Tabela_Pessoas.Listagem.focus()
+            self.ID_Adotante_Selecionado = (self.visualizar_adotantes.Tabela_Pessoas.Listagem.item(node_pessoa)['values'][0],self.visualizar_adotantes.Tabela_Pessoas.Listagem.item(node_pessoa)['values'][1])
+            self.visualizar_adotantes.root.destroy()
+            self.lbl_Adotante_Selecionado = Label(self.frame_ent,text=self.ID_Adotante_Selecionado[1],font=('verdana',8,'bold underline'),bg='#086788',fg='white')
+            self.lbl_Adotante_Selecionado.place(relx=0.32,rely= 0.051)
+            #print(self.ID_Adotante_Selecionado)
+        except:
+            messagebox.showinfo(title='Erro',message='Selecione um Adotante\n')
+    
+     # ------------------ Selecionando PET ---------------------- #
+    def selecionar_pet(self):
+        self.visualizar_pets = VisualizarPets(self.root)
+        self.visualizar_pets.bt_Selecionar.Botao.config(command=self.botao_selecionar_pet)
+    
+    def botao_selecionar_pet(self):
+        try:
+            node_pet = self.visualizar_pets.Tabela_Pets.Listagem.focus()
+            self.ID_Pet_Selecionado = (self.visualizar_pets.Tabela_Pets.Listagem.item(node_pet)['values'][0],self.visualizar_pets.Tabela_Pets.Listagem.item(node_pet)['values'][2])
+            self.visualizar_pets.root.destroy()
+            self.lbl_Pet_Selecionado = Label(self.frame_ent,text=self.ID_Pet_Selecionado[1],font=('verdana',8,'bold underline'),bg='#086788',fg='white')
+            self.lbl_Pet_Selecionado.place(relx=0.32,rely= 0.24)
+            #print(self.ID_Pet_Selecionado)
+        except:
+            messagebox.showinfo(title='Erro',message='Selecione um Pet\n')
+    
+    # ------------------ Formatando entrarda da Data ---------------------- #
     def format_data(self,event = None):
     
         text = self.data_visita_ent.et.get().replace("/", "")[:8]
@@ -152,10 +198,9 @@ class Adocao:
 
         self.data_visita_ent.et.delete(0, "end")
         self.data_visita_ent.et.insert(0, new_text)
+        
     
-
-        
-        
+    
+#window = Tk()
 #cadastro = Adocao(window)
-
 #window.mainloop()

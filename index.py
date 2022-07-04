@@ -86,7 +86,7 @@ class Janela_Index:
         CadCli(self.index)
 
     def inserir_elementos(self):
-        img = (Image.open('sair.png'))
+        img = (Image.open('Icones\\sair.png'))
         self.img = redimensionar(img, 25, 25)
         
         # -----------------------Nome da empresa----------------------- #
@@ -112,11 +112,6 @@ class Janela_Index:
 
         #----------------------- Botao Sair --------------------------#
         self.sair_botao = Button(self.index)
-        """image=self.img,
-            bg='#C4C4C4',
-            width=30,
-            height=40,
-            relief=RAISED,"""
         self.sair_botao.configure(
             image=self.img,
             bg='#086788',
