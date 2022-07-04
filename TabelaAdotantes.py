@@ -119,13 +119,13 @@ class VisualizarPessoas():
         
         #BOTAO DE SELECIONAR
         self.bt_Selecionar = Botoes(self.frame_2,'Selecionar')
-        self.bt_Selecionar.Botao.config(command=self.Selecionar)
+        #self.bt_Selecionar.Botao.config(command=self.Selecionar)
         self.bt_Selecionar.Botao.place(relx=0.45,rely=0.9)
         
                
     def inserir_tabela(self):
         self.Tabela_Pessoas = Tabelas(self.frame_2,
-                                  colunas = ('ID','NOME','CPF','E-MAIL','ENDEREÇO','TIPO'),
+                                  colunas = ('ID','NOME','CPF','E-MAIL','ENDEREÇO','TELEFONE','TIPO'),
                                   qtd_linhas = 20,
                                   largura = 120,
                                   lar_min = 50)
@@ -168,5 +168,5 @@ class VisualizarPessoas():
         
         self.mostrar_na_tabela()
         
-    
+#root = Tk() 
 #VisualizarPessoas(root)

@@ -118,7 +118,8 @@ class Adocao:
         self.botao_cadastrar.configure(
             text='Cadastrar',
             bg='#C4C4C4',
-            font=('Verdana', 8, 'bold')
+            font=('Verdana', 8, 'bold'),
+            command=self.cadastrar_adocao
         )
         self.botao_cadastrar.place(relx=0.435,rely=0.90)
     
@@ -141,6 +142,7 @@ class Adocao:
         if txt == '':
             try:
                 BD.Registrar_Adocao(self.Data,'Em Analise',self.ID_Pet_Selecionado[0],self.ID_Adotante_Selecionado[0])
+                BD.alterar_status_pet(self.ID_Pet_Selecionado[0],'Análise')
                 messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
                 self.root.destroy()
             except:
@@ -166,19 +168,22 @@ class Adocao:
     
      # ------------------ Selecionando PET ---------------------- #
     def selecionar_pet(self):
-        self.visualizar_pets = VisualizarPets(self.root)
+        self.visualizar_pets = VisualizarPets(self.root,'selecionar','disponiveis')
         self.visualizar_pets.bt_Selecionar.Botao.config(command=self.botao_selecionar_pet)
     
     def botao_selecionar_pet(self):
         try:
             node_pet = self.visualizar_pets.Tabela_Pets.Listagem.focus()
-            self.ID_Pet_Selecionado = (self.visualizar_pets.Tabela_Pets.Listagem.item(node_pet)['values'][0],self.visualizar_pets.Tabela_Pets.Listagem.item(node_pet)['values'][2])
-            self.visualizar_pets.root.destroy()
-            self.lbl_Pet_Selecionado = Label(self.frame_ent,text=self.ID_Pet_Selecionado[1],font=('verdana',8,'bold underline'),bg='#086788',fg='white')
-            self.lbl_Pet_Selecionado.place(relx=0.32,rely= 0.24)
-            #print(self.ID_Pet_Selecionado)
+            self.ID_Pet_Selecionado = (self.visualizar_pets.Tabela_Pets.Listagem.item(node_pet)['values'][0],self.visualizar_pets.Tabela_Pets.Listagem.item(node_pet)['values'][1],self.visualizar_pets.Tabela_Pets.Listagem.item(node_pet)['values'][5])
+            if self.ID_Pet_Selecionado[2] == 'Não Liberado':
+                messagebox.showinfo(title='Erro',message='Pet Não Liberado para Adoção!\n')
+            else:
+                self.visualizar_pets.root.destroy()
+                self.lbl_Pet_Selecionado = Label(self.frame_ent,text=self.ID_Pet_Selecionado[1],font=('verdana',8,'bold underline'),bg='#086788',fg='white')
+                self.lbl_Pet_Selecionado.place(relx=0.32,rely= 0.24)
+                #print(self.ID_Pet_Selecionado)
         except:
-            messagebox.showinfo(title='Erro',message='Selecione um Pet\n')
+            messagebox.showinfo(title='Erro',message='Selecione um Pet!\n')
     
     # ------------------ Formatando entrarda da Data ---------------------- #
     def format_data(self,event = None):

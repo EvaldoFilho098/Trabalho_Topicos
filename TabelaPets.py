@@ -37,9 +37,11 @@ class Botoes:
         )
         
 class VisualizarPets():
-    def __init__(self,master):
+    def __init__(self,master,botao='ok',tipos_pets='todos'):
         #self.root = master
         self.root = Toplevel(master)
+        self.botao_final = botao
+        self.tipos_pets = tipos_pets
         self.Tela()
         self.frames_da_tela()
         self.inserir_widgets()
@@ -126,15 +128,19 @@ class VisualizarPets():
         self.bt_Limpar.Botao.config(command=self.Limpar)
         self.bt_Limpar.Botao.place(relx=0.50,rely=0.88,relwidth=0.15,relheight=0.15)
         
-        #BOTAO DE SELECIONAR
-        self.bt_Selecionar = Botoes(self.frame_2,'Selecionar')
-        self.bt_Selecionar.Botao.config(command=self.Selecionar)
+        #BOTAO DE SELECIONAR OU OK
+        self.bt_Selecionar = Botoes(self.frame_2,'')
+        if self.botao_final == 'selecionar':
+            self.bt_Selecionar.Botao.config(text='Selecionar')
+        else:
+            self.bt_Selecionar.Botao.config(text='OK',command=self.root.destroy)
+            
         self.bt_Selecionar.Botao.place(relx=0.45,rely=0.9)
         
                
     def inserir_tabela(self):
         self.Tabela_Pets = Tabelas(self.frame_2,
-                                  colunas = ('ID','NOME','RAÇA','GENERO','IDADE'),
+                                  colunas = ('ID','NOME','RAÇA','GENERO','IDADE','STATUS'),
                                   qtd_linhas = 20,
                                   largura = 120,
                                   lar_min = 50)
@@ -154,7 +160,7 @@ class VisualizarPets():
     
     def mostrar_na_tabela(self,filtros={}): 
         self.Tabela_Pets.Listagem.delete(*self.Tabela_Pets.Listagem.get_children())
-        self.Lista = BD.mostrar_pets(filtros)
+        self.Lista = BD.mostrar_pets(filtros,self.tipos_pets)
         self.Tabela_Pets.Inserir(self.Lista)
     
     def Selecionar(self):

@@ -39,9 +39,17 @@ class Janela_Login:
         self.Ajuda = Menu(self.menubar)
         self.Ajuda.configure(tearoff=0)
         self.menubar.add_cascade(label="Ajuda", menu=self.Ajuda)
-        self.Ajuda.add_command(label="Sobre")
+        self.Ajuda.add_command(label="Sobre",command=self.Sobre)
         self.root.config(menu=self.menubar)
 
+    def Sobre(self):
+        txt = """
+            Sistema de Monitoramento de Adoções
+            
+            2022
+            
+        """
+        messagebox.showinfo(title="Login Info",message=txt)
     # -----------------------Elementos de acesso----------------------- #
     def inserir_elementos(self):
         

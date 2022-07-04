@@ -101,8 +101,9 @@ class InfoPet:
         self.Idade = dados[4]
         if 'anos' not in str(self.Idade).lower():
             self.Idade = str(self.Idade) + ' Anos'
-            
+        
         self.Status = dados[5]
+            
         self.dir_Foto = dados[6]
         #print(dados)
     

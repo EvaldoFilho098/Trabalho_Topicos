@@ -79,7 +79,7 @@ class Janela_Index:
 
 
     def Open_tabPet(self):
-        VisualizarPets(self.index)
+        VisualizarPets(self.index,'ok','todos')
 
 
     def Open_cadCli(self):

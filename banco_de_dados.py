@@ -220,14 +220,20 @@ def mostrar_adotantes(filtros={}):
     conn.close()
     return lista
 
-def mostrar_pets(filtros={}):
+def mostrar_pets(filtros={},tipos_pets = 'todos'):
     conn,cursor = conectar()
-    comando = "SELECT COD_pet,NOME_pet,RACA_pet,GENERO_pet,IDADE_pet FROM Pet"
+    comando = "SELECT COD_pet,NOME_pet,RACA_pet,GENERO_pet,IDADE_pet,STATUS_pet FROM Pet"
     
+    if tipos_pets != 'todos':
+        comando += " WHERE STATUS_pet = 'Liberado' OR STATUS_pet = 'Não Liberado'"
     #print(comando)
-    if filtros != {}:
-        comando += " WHERE "
     
+    if filtros != {}:
+        if 'WHERE' not in comando:
+            comando += ' WHERE '
+        else:
+            comando += ' AND '
+            
         for f in filtros.items():
             if f[0] == "NOME_pet":
                 comando += "NOME_pet LIKE '%{}%' AND ".format(f[1])
@@ -237,12 +243,26 @@ def mostrar_pets(filtros={}):
                 comando += str(f[0]) + " = '" + str(f[1]) + "' AND "
         
         comando = comando[:-5]
-        
+    
+    #print(comando)
     cursor.execute(comando)
 
     lista = []
     for linha in cursor.fetchall():
         lista.append(linha)
 
+    #print(lista)
+    
     conn.close()
     return lista
+
+def alterar_status_pet(id,status):
+    conn,cursor = conectar()
+    cursor.execute(""" UPDATE  Pet 
+        SET STATUS_pet = ?  
+        WHERE COD_pet = ? """,(status,str(id)))
+    #result = cursor.fetchone()
+    conn.commit()
+    conn.close()
+    
+    #return result
