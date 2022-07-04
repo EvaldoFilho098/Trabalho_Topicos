@@ -108,21 +108,14 @@ class CadConsulta:
         
     #---- Criando Entry's da tela ----#
 
-        # create a combobox
         self.clinica_selecionada = StringVar()
         self.clinica_ent = Combobox(self.frame_ent, textvariable=self.clinica_selecionada)
-
-        # get first 3 letters of every month name
         self.Clinicas_ID = BD.busca_clinicas()
         self.Clinicas = []
         for item in self.Clinicas_ID:
             self.Clinicas.append(item[0])
         self.clinica_ent['values'] = self.Clinicas
-
-        # prevent typing a value
         self.clinica_ent['state'] = 'readonly'
-
-        #self.clinica_ent = entrada(self.frame_ent)
         self.clinica_ent.pack(side=TOP, anchor='w',pady=6,padx=2)
 
         self.servicos_ent = Text(self.frame_ent)

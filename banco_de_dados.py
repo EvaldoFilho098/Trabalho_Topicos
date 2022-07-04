@@ -193,6 +193,17 @@ def busca_clinicas():
     
     return result
 
+def busca_situacoes_adocao():
+    conn,cursor = conectar()
+    cursor.execute(""" 
+            SELECT DISTINCT STATUS_adocao FROM ADOTA_ADOCAO
+        """)
+    result = cursor.fetchall()
+    conn.close()
+    
+    return result
+
+
 def mostrar_adotantes(filtros={}):
     conn,cursor = conectar()
     comando = "SELECT COD_pessoa,NOME_pessoa,CPF_pessoa,EMAIL_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,TIPO_CAD_pessoa FROM Cad_pessoa"
@@ -264,5 +275,75 @@ def alterar_status_pet(id,status):
     #result = cursor.fetchone()
     conn.commit()
     conn.close()
+
+def alterar_status_adocao(id,status):
+    conn,cursor = conectar()
+    cursor.execute(""" UPDATE  ADOTA_ADOCAO 
+        SET STATUS_adocao = ?  
+        WHERE COD_adocao = ? """,(status,str(id)))
+    #result = cursor.fetchone()
+    conn.commit()
+    conn.close()
     
     #return result
+
+def mostrar_adocoes(filtros={}):
+    conn,cursor = conectar()
+    comando = "SELECT COD_adocao, FK_Cad_pessoa_COD_pessoa, FK_Pet_COD_pet, DATA_adocao, STATUS_adocao FROM ADOTA_ADOCAO"
+    filtro_nome_pet = False
+    filtro_nome_pessoa = False
+    if filtros != {}:
+        
+        comando += ' WHERE '
+            
+        for f in filtros.items():
+            if f[0] == "NOME_pet":
+                filtro_nome_pet = True
+            elif f[0] == "NOME_pessoa":
+                filtro_nome_pessoa = True
+            else: 
+                comando += str(f[0]) + " = '" + str(f[1]) + "' AND "
+        
+        comando = comando[:-5]
+    
+    cursor.execute(comando)
+
+    lista_aux = []
+    for linha in cursor.fetchall():
+        lista_aux.append(linha)
+    
+    #2-COD PET  1-COD PESSOA
+    
+    lista = []
+    #ADICIONA NOME DAS PESSOAS
+    for item in lista_aux:
+        
+        cursor.execute("""
+            SELECT NOME_pessoa FROM Cad_pessoa WHERE COD_pessoa = ?
+        """,(str(item[1])))
+        nome_pessoa = cursor.fetchone()
+        
+        cursor.execute("""
+            SELECT NOME_pet FROM Pet WHERE COD_pet = ?
+        """,(str(item[2])))
+        nome_pet = cursor.fetchone()
+             
+        lista.append((item[0],nome_pessoa[0],nome_pet[0],item[3],item[4]))
+    
+    lista_aux = []
+    if filtro_nome_pet == True:
+        for item in lista:
+            if filtros['NOME_pet'] in item:
+                lista_aux.append(item)
+    
+    if filtro_nome_pessoa == True:
+        for item in lista:
+            if filtros['NOME_pessoa'] in item:
+                lista_aux.append(item)
+    
+    if lista_aux != []:
+        lista = lista_aux
+
+    conn.close()
+    
+    return lista

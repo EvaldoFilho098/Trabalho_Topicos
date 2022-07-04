@@ -132,13 +132,6 @@ class VisualizarPessoas():
         self.Tabela_Pessoas.Listagem.place(relx=0,rely=0,relwidth=0.982,relheight=0.8)
         self.Tabela_Pessoas.Barra_Y.place(relx=0.984 ,rely=0,relheight=0.835)
         self.Tabela_Pessoas.Barra_X.place(relx=0.0 ,rely=0.799,relwidth=0.982)
-
-        def Pegar_Infos(event):
-            nodeId_1 = self.Tabela_Pessoas.Listagem.focus()
-            id = self.Tabela_Pessoas.Listagem.item(nodeId_1)['values'][0]
-            #Infos(self.root,id)
-        
-        self.Tabela_Pessoas.Listagem.bind('<Double-1>',Pegar_Infos)
         
         self.mostrar_na_tabela()
     
