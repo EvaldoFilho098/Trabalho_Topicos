@@ -379,13 +379,13 @@ class Gerenciamento:
         self.bt_Adicionar_Voluntario.Botao.config(
             command = self.Adicionar_Voluntario
         )
-        self.bt_Adicionar_Voluntario.Botao.place(relx=0.35,rely=0.40,relwidth=0.15,relheight=0.25)
+        self.bt_Adicionar_Voluntario.Botao.place(relx=0.45,rely=0.40,relwidth=0.15,relheight=0.25)
         
-        self.bt_Remover_Voluntario = Botoes(self.Frame_Decisoes_vv,'Remover')
-        self.bt_Remover_Voluntario.Botao.config(
-            command = self.Remover_Voluntario
-        )
-        self.bt_Remover_Voluntario.Botao.place(relx=0.55,rely=0.40,relwidth=0.15,relheight=0.25)
+        #self.bt_Remover_Voluntario = Botoes(self.Frame_Decisoes_vv,'Remover')
+        #self.bt_Remover_Voluntario.Botao.config(
+        #    command = self.Remover_Voluntario
+        #)
+        #self.bt_Remover_Voluntario.Botao.place(relx=0.55,rely=0.40,relwidth=0.15,relheight=0.25)
     
     def Adicionar_Voluntario(self):
         CadPes(self.root)
