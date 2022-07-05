@@ -92,25 +92,25 @@ class Gerenciamento:
         
         self.Notebook = ttk.Notebook(self.Frame_Notebook)
         self.Notebook.place(relx=0.02,rely=0.0,relheight=0.95,relwidth=0.95)
-        #self.Notebook.pack(side=TOP, fill='both', expand=True)
+        self.Notebook.pack(side=TOP, fill='both', expand=True)
 
         # create frames
         self.aba1 = Frame(self.Notebook, width=1000, height=460)
         self.aba2 = Frame(self.Notebook, width=1000, height=460)
-        #self.aba3 = Frame(self.Notebook, width=1000, height=460)
+        self.aba3 = Frame(self.Notebook, width=1000, height=460)
 
         self.aba1.pack(fill='both', expand=True)
         self.aba2.pack(fill='both', expand=True)
-        #self.aba3.pack(fill='both', expand=True)
+        self.aba3.pack(fill='both', expand=True)
 
         # add frames to self.Notebook
         self.Notebook.add(self.aba1, text='Verificar Adoções')
         self.Notebook.add(self.aba2, text='Verificar Adotantes/Voluntários')
-        #self.Notebook.add(self.aba3, text='Verificar Lares Temporários')
+        self.Notebook.add(self.aba3, text='Verificar Lares Temporários')
         
         self.aba_verif_adocao()
         self.aba_verif_adotantes()
-        #self.aba_verif_lares()
+        self.aba_verif_lares()
     
     # -------------------- ABA 1 - VERIFICAR ADOCOES ------------------
     def aba_verif_adocao(self):
@@ -380,22 +380,9 @@ class Gerenciamento:
             command = self.Adicionar_Voluntario
         )
         self.bt_Adicionar_Voluntario.Botao.place(relx=0.45,rely=0.40,relwidth=0.15,relheight=0.25)
-        
-        #self.bt_Remover_Voluntario = Botoes(self.Frame_Decisoes_vv,'Remover')
-        #self.bt_Remover_Voluntario.Botao.config(
-        #    command = self.Remover_Voluntario
-        #)
-        #self.bt_Remover_Voluntario.Botao.place(relx=0.55,rely=0.40,relwidth=0.15,relheight=0.25)
     
     def Adicionar_Voluntario(self):
         CadPes(self.root)
-    
-    def Remover_Voluntario(self):
-        nodeId_1 = self.Tabela_Voluntarios.Listagem.focus()
-        id_adotante = self.Tabela_Voluntarios.Listagem.item(nodeId_1)['values'][0]
-        BD.remover_adotante(id_adotante)
-        messagebox.showinfo('Deletar Adotante/Voluntário','Adotante/Voluntário Removido!')
-        self.mostrar_na_tabela_voluntarios()
     
     def atualiza_situacoes_voluntarios(self):
         self.tipo_busca_vv = BD.busca_situacoes_voluntarios()
@@ -447,6 +434,12 @@ class Gerenciamento:
         self.lb_Filtros_vl.Texto.config(font=('verdana',14,'bold'))
         self.lb_Filtros_vl.Texto.place(relx = 0.48,rely=0)
         
+        img = (Image.open('Icones\\atualizar.png'))
+        self.Img_Atualizar_vl= redimensionar(img,20,20)
+        self.botao_atualizar_vl = Button(self.Frame_Filtros_vl,image=self.Img_Atualizar_vl)
+        self.botao_atualizar_vl.config(command=self.mostrar_na_tabela_lares,bg='#C4C4C4')
+        self.botao_atualizar_vl.place(relx=0.97,rely=0.9,relheight=0.1,relwidth=0.03)
+        
         #LABELS
         self.lb_Nome_pess_vl = Textos(self.Frame_Filtros_vl,'Nome Adotante:')
         self.lb_Nome_pess_vl.Texto.place(relx=0.05,rely=0.30)
@@ -454,14 +447,11 @@ class Gerenciamento:
         self.lb_cod_pess_vl = Textos(self.Frame_Filtros_vl,'Código Adotante:')
         self.lb_cod_pess_vl.Texto.place(relx=0.05,rely=0.5)
         
-        self.lb_Nome_pet_vl = Textos(self.Frame_Filtros_vl,'Nome Pet:')
-        self.lb_Nome_pet_vl.Texto.place(relx=0.40,rely=0.30)
+        self.lb_Capacidade_vl = Textos(self.Frame_Filtros_vl,'Capacidade:')
+        self.lb_Capacidade_vl.Texto.place(relx=0.40,rely=0.30)
         
-        self.lb_cod_pet_vl = Textos(self.Frame_Filtros_vl,'Código Pet:')
-        self.lb_cod_pet_vl.Texto.place(relx=0.40,rely=0.5)
-        
-        self.lb_situacao_vl = Textos(self.Frame_Filtros_vl,'Situação:')
-        self.lb_situacao_vl.Texto.place(relx=0.67,rely=0.30)
+        self.lb_Status_vl = Textos(self.Frame_Filtros_vl,'Status:')
+        self.lb_Status_vl.Texto.place(relx=0.40,rely=0.50)
         
         #ENTRADAS
         self.et_Nome_pess_vl = Entradas(self.Frame_Filtros_vl)
@@ -470,27 +460,24 @@ class Gerenciamento:
         self.et_cod_pess_vl = Entradas(self.Frame_Filtros_vl)
         self.et_cod_pess_vl.Entrada.place(relx=0.185,rely=0.5)
         
-        self.et_Nome_pet_vl = Entradas(self.Frame_Filtros_vl)
-        self.et_Nome_pet_vl.Entrada.place(relx=0.495,rely=0.30)
-        
-        self.et_cod_pet_vl = Entradas(self.Frame_Filtros_vl)
-        self.et_cod_pet_vl.Entrada.place(relx=0.495,rely=0.5)
+        self.et_Capacidade_vl = Entradas(self.Frame_Filtros_vl)
+        self.et_Capacidade_vl.Entrada.place(relx=0.495,rely=0.30)
         
         
-        self.situacao_selecionada_vl = StringVar()
-        self.et_situacao_vl = ttk.Combobox(self.Frame_Filtros_vl, textvariable=self.situacao_selecionada_vl)            
-        #self.atualiza_situacoes_adocao()
-        self.et_situacao_vl['state'] = 'readonly'
-        self.et_situacao_vl.place(relx=0.75,rely=0.30)
+        self.situacao_status_vl = StringVar()
+        self.et_status_vl = ttk.Combobox(self.Frame_Filtros_vl, textvariable=self.situacao_status_vl)            
+        self.atualiza_situacoes_lares()
+        self.et_status_vl['state'] = 'readonly'
+        self.et_status_vl.place(relx=0.495,rely=0.5)
         
         #BOTAO DE PESQUISAR
         self.bt_Buscar_vl = Botoes(self.Frame_Filtros_vl,'Buscar')
-        self.bt_Buscar_vl.Botao.config(command=self.Buscar_Adocao)
+        self.bt_Buscar_vl.Botao.config(command=self.Buscar_Lar)
         self.bt_Buscar_vl.Botao.place(relx=0.35,rely=0.85,relwidth=0.15,relheight=0.15)
         
         #BOTAO DE LIMPAR FILTROS
         self.bt_Limpar_vl = Botoes(self.Frame_Filtros_vl,'Limpar')
-        self.bt_Limpar_vl.Botao.config(command=self.Limpar_Adocao)
+        self.bt_Limpar_vl.Botao.config(command=self.Limpar_Lar)
         self.bt_Limpar_vl.Botao.place(relx=0.55,rely=0.85,relwidth=0.15,relheight=0.15)
 
         
@@ -501,9 +488,9 @@ class Gerenciamento:
         )
         self.Frame_Tabela_vl.place(relx=0,rely=0.30,relwidth=1,relheight=0.60)
         
-        
+        #COD_larTemporario,STATUS_lar,CAPACIDADE_lar,UTILIZACAO_lar,ENDERECO_lar,fk_Cad_pessoa_COD_pessoa
         self.Tabela_Lares = Tabelas(self.Frame_Tabela_vl,
-                                  colunas = ('ID','NOME ADOTANTE','NOME PET','DATA DE VISITA','STATUS'),
+                                  colunas = ('ID','NOME ADOTANTE','ENDERECO','STATUS','CAPACIDADE','UTILIZACAO'),
                                   qtd_linhas = 15,
                                   largura = 120,
                                   lar_min = 50)
@@ -511,7 +498,7 @@ class Gerenciamento:
         self.Tabela_Lares.Barra_Y.place(relx=0.984 ,rely=0,relheight=0.835)
         self.Tabela_Lares.Barra_X.place(relx=0.0 ,rely=0.799,relwidth=0.982)
         
-        #self.mostrar_na_tabela_adocoes()
+        self.mostrar_na_tabela_lares()
     
         # -------------------- BOTOES DE DECISAO -------------------------
         self.Frame_Decisoes_vl = Frame(self.aba3)
@@ -520,17 +507,81 @@ class Gerenciamento:
         )
         self.Frame_Decisoes_vl.place(relx=0,rely=0.80,relwidth=1,relheight=0.20)
         
-        self.bt_Aprovar_adocao = Botoes(self.Frame_Decisoes_vl,'Aprovar')
-        self.bt_Aprovar_adocao.Botao.config(
-            command = self.Aprovar_Adocao
+        self.bt_Aprovar_Lar = Botoes(self.Frame_Decisoes_vl,'Aprovar')
+        self.bt_Aprovar_Lar.Botao.config(
+            command = self.Aprovar_Lar
         )
-        self.bt_Aprovar_adocao.Botao.place(relx=0.35,rely=0.40,relwidth=0.15,relheight=0.25)
+        self.bt_Aprovar_Lar.Botao.place(relx=0.35,rely=0.40,relwidth=0.15,relheight=0.25)
         
-        self.bt_Reprovar_adocao = Botoes(self.Frame_Decisoes_vl,'Reprovar')
-        self.bt_Reprovar_adocao.Botao.config(
-            command = self.Reprovar_Adocao
+        self.bt_Reprovar_Lar = Botoes(self.Frame_Decisoes_vl,'Reprovar')
+        self.bt_Reprovar_Lar.Botao.config(
+            command = self.Reprovar_Lar
         )
-        self.bt_Reprovar_adocao.Botao.place(relx=0.55,rely=0.40,relwidth=0.15,relheight=0.25)
+        self.bt_Reprovar_Lar.Botao.place(relx=0.55,rely=0.40,relwidth=0.15,relheight=0.25)
+    
+    def atualiza_situacoes_lares(self):
+        self.situacoes_busca_vl = BD.busca_situacoes_adocao()
+        self.situacoes_vl=[]
+        for item in self.situacoes_busca_vl:
+            self.situacoes_vl.append(item[0])
+        self.et_status_vl['values'] = self.situacoes_vl
+            
+    def mostrar_na_tabela_lares(self,filtros={}): 
+        self.Tabela_Lares.Listagem.delete(*self.Tabela_Lares.Listagem.get_children())
+        self.Lista_Voluntarios,self.Lista_Voluntarios_ids = BD.mostrar_lares(filtros)
+        self.Tabela_Lares.Inserir(self.Lista_Voluntarios)
+        self.atualiza_situacoes_voluntarios()
         
+    def Buscar_Lar(self):
+        busca = {}
+        nome_pessoa = self.et_Nome_pess_vl.Entrada.get()
+        if nome_pessoa != '':
+            busca['NOME_pessoa'] = nome_pessoa
+            
+        cod_pessoa = self.et_cod_pess_vl.Entrada.get()
+        if cod_pessoa != '':
+            busca['COD_pessoa'] = cod_pessoa
+            
+        status = self.situacao_status_vl.get()
+        if status != '':
+            busca['STATUS_lar'] = status
+            
+        self.mostrar_na_tabela_lares(busca)
+    
+    def Limpar_Lar(self):
+        self.et_Nome_pess_vl.Entrada.delete(0,END)
+        self.et_cod_pess_vl.Entrada.delete(0,END)
+        self.et_status_vl.set('')
+        
+        self.mostrar_na_tabela_lares()
+    
+    def Aprovar_Lar(self):
+        nodeId_1 = self.Tabela_Lares.Listagem.focus()
+        id_lar = self.Tabela_Lares.Listagem.item(nodeId_1)['values'][0]
+        status_lar = self.Tabela_Lares.Listagem.item(nodeId_1)['values'][3]
+        if status_lar == 'Em Analise' or status_lar == 'Reprovado':
+            BD.alterar_status_lar(id_lar,'Aprovado')
+            messagebox.showinfo('Info Lar Temporário',message='Lar Temporário Aprovado com Sucesso!')
+            self.mostrar_na_tabela_adocoes()
+            self.atualiza_situacoes_lares()
+        elif status_lar == 'Aprovado':
+            messagebox.showinfo('Info Lar Temporário',message='Esse Lar Temporário Já Foi Aprovada!')
+        else:
+            messagebox.showinfo('Info Lar Temporário',message='Esse Lar Temporário Não Pode Ser Aprovada!')
+
+    def Reprovar_Lar(self):
+        nodeId_1 = self.Tabela_Lares.Listagem.focus()
+        id_lar = self.Tabela_Lares.Listagem.item(nodeId_1)['values'][0]
+        status_lar = self.Tabela_Lares.Listagem.item(nodeId_1)['values'][3]
+        if status_lar == 'Em Analise' or status_lar == 'Aprovado':
+            BD.alterar_status_lar(id_lar,'Reprovado')
+            messagebox.showinfo('Info Lar Temporário',message='Lar Temporário Reprovado com Sucesso!')
+            self.mostrar_na_tabela_adocoes()
+            self.atualiza_situacoes_lares()
+        elif status_lar == 'Reprovado':
+            messagebox.showinfo('Info Lar Temporário',message='Esse Lar Temporário Já Foi Reprovada!')
+        else:
+            messagebox.showinfo('Info Lar Temporário',message='Esse Lar Temporário Não Pode Ser Reprovada!')
+    
 #window = Tk()
 #Gerenciamento(window)

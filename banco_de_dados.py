@@ -203,6 +203,16 @@ def busca_situacoes_adocao():
     
     return result
 
+def busca_situacoes_lares():
+    conn,cursor = conectar()
+    cursor.execute(""" 
+            SELECT DISTINCT STATUS_lar FROM Lar_temporario
+        """)
+    result = cursor.fetchall()
+    conn.close()
+    
+    return result
+
 def busca_situacoes_voluntarios():
     conn,cursor = conectar()
     cursor.execute(""" 
@@ -276,6 +286,55 @@ def mostrar_pets(filtros={},tipos_pets = 'todos'):
     conn.close()
     return lista
 
+def mostrar_lares(filtros={}):
+    conn,cursor = conectar()
+    #'ID','NOME ADOTANTE','ENDERECO','STATUS','CAPACIDADE','UTILIZACAO'
+    #COD_larTemporario,STATUS_lar,CAPACIDADE_lar,UTILIZACAO_lar,ENDERECO_lar,fk_Cad_pessoa_COD_pessoa
+    comando = "SELECT COD_larTemporario,fk_Cad_pessoa_COD_pessoa,ENDERECO_lar,STATUS_lar,CAPACIDADE_lar,UTILIZACAO_lar FROM Lar_temporario"
+    filtro_nome_pes = False
+    #print(comando)
+    if filtros != {}:
+        comando += " WHERE "
+    
+        for f in filtros.items():
+            if f[0] == "NOME_pessoa":
+                filtro_nome_pes = True
+            else: 
+                comando += str(f[0]) + " = '" + str(f[1]) + "' AND "
+        
+        comando = comando[:-5]
+        
+    cursor.execute(comando)
+
+    lista_aux = []
+    for linha in cursor.fetchall():
+        lista_aux.append(linha)
+        
+    lista = []
+    
+    #ADICIONA NOME DAS PESSOAS
+    for item in lista_aux:
+        
+        cursor.execute("""
+            SELECT NOME_pessoa FROM Cad_pessoa WHERE COD_pessoa = ?
+        """,(str(item[1])))
+        nome_pessoa = cursor.fetchone()
+             
+        lista.append((item[0],nome_pessoa[0],item[2],item[3],item[4],item[5]))
+    
+    lista_aux_2 = []
+    if filtro_nome_pes == True:
+        for item in lista:
+            if filtros['NOME_pessoa'] in item:
+                lista_aux_2.append(item)
+    
+    if lista_aux_2 != []:
+        lista = lista_aux_2
+
+    conn.close()
+    #print(lista,lista_aux)
+    return lista,lista_aux
+
 def alterar_status_pet(id,status):
     conn,cursor = conectar()
     cursor.execute(""" UPDATE  Pet 
@@ -293,8 +352,16 @@ def alterar_status_adocao(id,status):
     #result = cursor.fetchone()
     conn.commit()
     conn.close()
+
+def alterar_status_lar(id,status):
+    conn,cursor = conectar()
+    cursor.execute(""" UPDATE  Lar_temporario 
+        SET STATUS_lar = ?  
+        WHERE COD_larTemporario = ? """,(status,str(id)))
+    #result = cursor.fetchone()
+    conn.commit()
+    conn.close()
     
-    #return result
 
 def mostrar_adocoes(filtros={}):
     conn,cursor = conectar()
@@ -336,8 +403,11 @@ def mostrar_adocoes(filtros={}):
             SELECT NOME_pet FROM Pet WHERE COD_pet = ?
         """,(str(item[2])))
         nome_pet = cursor.fetchone()
-             
-        lista.append((item[0],nome_pessoa[0],nome_pet[0],item[3],item[4]))
+        
+        try:
+            lista.append((item[0],nome_pessoa[0],nome_pet[0],item[3],item[4]))
+        except:
+            lista.append((item[0],nome_pessoa,nome_pet,item[3],item[4]))
     
     lista_aux_2 = []
     if filtro_nome_pet == True:
@@ -355,12 +425,5 @@ def mostrar_adocoes(filtros={}):
 
     conn.close()
     
+    
     return lista,lista_aux
-
-def remover_adotante(id_adotante):
-    conn,cursor = conectar()
-    cursor.execute(""" DELETE FROM Cad_pessoa 
-        WHERE COD_pessoa = ? """,(str(id_adotante)))
-    #result = cursor.fetchone()
-    conn.commit()
-    conn.close()
