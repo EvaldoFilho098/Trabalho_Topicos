@@ -203,6 +203,15 @@ def busca_situacoes_adocao():
     
     return result
 
+def busca_situacoes_voluntarios():
+    conn,cursor = conectar()
+    cursor.execute(""" 
+            SELECT DISTINCT TIPO_CAD_pessoa FROM Cad_pessoa
+        """)
+    result = cursor.fetchall()
+    conn.close()
+    
+    return result
 
 def mostrar_adotantes(filtros={}):
     conn,cursor = conectar()
@@ -330,20 +339,28 @@ def mostrar_adocoes(filtros={}):
              
         lista.append((item[0],nome_pessoa[0],nome_pet[0],item[3],item[4]))
     
-    lista_aux = []
+    lista_aux_2 = []
     if filtro_nome_pet == True:
         for item in lista:
             if filtros['NOME_pet'] in item:
-                lista_aux.append(item)
+                lista_aux_2.append(item)
     
     if filtro_nome_pessoa == True:
         for item in lista:
             if filtros['NOME_pessoa'] in item:
-                lista_aux.append(item)
+                lista_aux_2.append(item)
     
-    if lista_aux != []:
-        lista = lista_aux
+    if lista_aux_2 != []:
+        lista = lista_aux_2
 
     conn.close()
     
-    return lista
+    return lista,lista_aux
+
+def remover_adotante(id_adotante):
+    conn,cursor = conectar()
+    cursor.execute(""" DELETE FROM Cad_pessoa 
+        WHERE COD_pessoa = ? """,(str(id_adotante)))
+    #result = cursor.fetchone()
+    conn.commit()
+    conn.close()

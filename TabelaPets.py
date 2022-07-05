@@ -1,8 +1,10 @@
 from tkinter import *
 from tkinter import ttk
+from IMG import redimensionar
 from InfoPet import InfoPet
 from Tabelas import Tabelas
 import banco_de_dados as BD
+from PIL import Image, ImageTk
 
 #root = Tk()
 
@@ -96,6 +98,12 @@ class VisualizarPets():
         self.lb_Filtros.Texto.config(font=('verdana',14,'bold'))
         self.lb_Filtros.Texto.place(relx = 0.38,rely=0)
         
+        img = (Image.open('Icones\\atualizar.png'))
+        self.Img_Atualizar= redimensionar(img,20,20)
+        self.botao_atualizar = Button(self.frame_1,image=self.Img_Atualizar)
+        self.botao_atualizar.config(command=self.mostrar_na_tabela,bg='#C4C4C4')
+        self.botao_atualizar.place(relx=0.96,rely=0.9,relheight=0.1,relwidth=0.04)
+        
         #LABELS
         self.lb_Nome = Textos(self.frame_lbs,'Nome:')
         self.lb_Nome.Texto.pack(side=TOP,anchor='e', pady=4)
@@ -130,12 +138,13 @@ class VisualizarPets():
         
         #BOTAO DE SELECIONAR OU OK
         self.bt_Selecionar = Botoes(self.frame_2,'')
+        
         if self.botao_final == 'selecionar':
             self.bt_Selecionar.Botao.config(text='Selecionar')
         else:
             self.bt_Selecionar.Botao.config(text='OK',command=self.root.destroy)
             
-        self.bt_Selecionar.Botao.place(relx=0.45,rely=0.9)
+        self.bt_Selecionar.Botao.place(relx=0.45,rely=0.9,relwidth=0.1)
         
                
     def inserir_tabela(self):
@@ -193,4 +202,4 @@ class VisualizarPets():
         self.mostrar_na_tabela()
         
 #root = Tk()
-#VisualizarPets(root)
+#VisualizarPets(root,'ok','todos')

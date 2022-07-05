@@ -45,7 +45,7 @@ class InfoPet:
         self.id_pet = id_pet
         #self.root = master
         self.root = Toplevel(master)
-        
+        #self.privilegio = privilegio
         self.tela()
         self.frames_tela()
         self.pegar_infos()
@@ -164,7 +164,27 @@ class InfoPet:
 
         self.botao_ok = Botoes(self.root,'Ok')
         self.botao_ok.botao.config(command=self.root.destroy)
-        self.botao_ok.botao.pack(side=BOTTOM,anchor='center',pady=10)
+        
+        self.botao_liberar = Botoes(self.root,'Liberar Para Adoção')
+        self.botao_liberar.botao.config(command=self.liberar_adocao)
+        
+        if self.Status == 'Não Liberado':
+            self.botao_ok.botao.place(relx=0.30,rely=0.935, relwidth=0.15)
+            self.botao_liberar.botao.place(relx=0.55,rely=0.935, relwidth=0.15)
+        else:    
+            self.botao_ok.botao.place(relx=0.45,rely=0.935, relwidth=0.15)
+        
+    def liberar_adocao(self):
+        #mudar status no banco
+        BD.alterar_status_pet(self.id_pet,'Liberado')
+        #mudar status na informacao
+        self.pegar_infos()
+        self.lbl_Status.texto.destroy()
+        self.lbl_Status = TextosInfos(self.infos_1, self.Status)
+        self.lbl_Status.texto.pack(side=TOP,anchor='w',pady=10,padx=60)
+        #alterar os botoes
+        self.botao_liberar.botao.destroy()
+        self.botao_ok.botao.place(relx=0.45,rely=0.935, relwidth=0.15)
     
     def adicionar_elementos_frame_info2(self):
 
@@ -190,6 +210,10 @@ class InfoPet:
         self.botao_add.botao.place(relx=0.95,rely=0.0,relheight=0.1,relwidth=0.05)
 
     def atualizar_tabela(self):
+        self.pegar_infos()
+        self.lbl_Status.texto.destroy()
+        self.lbl_Status = TextosInfos(self.infos_1, self.Status)
+        self.lbl_Status.texto.pack(side=TOP,anchor='w',pady=10,padx=60)
         self.mostrar_na_tabela()
 
     def nova_consulta(self):

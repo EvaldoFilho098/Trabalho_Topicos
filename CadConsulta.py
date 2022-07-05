@@ -2,11 +2,7 @@ from msilib.schema import ComboBox
 from tkinter import filedialog as dlg, messagebox
 from tkinter import *
 from tkinter.ttk import Combobox
-
 import banco_de_dados as BD
-
-#window = Tk()
-
 
 # -----------------------Class Label----------------------- #
 class textos:
@@ -42,6 +38,7 @@ class CadConsulta:
         self.id_pet = id_pet
         self.tela()
         self.adicionar_elementos()
+        #self.root.mainloop()
         self.root.grab_set()
     
     def tela(self):
@@ -63,18 +60,12 @@ class CadConsulta:
         self.frame_lbs = Frame(self.janela)
         self.frame_lbs.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_lbs.place(relx=0.05, rely=0.2,relwidth=0.35,relheight=0.95)
         
         self.frame_ent = Frame(self.janela)
         self.frame_ent.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_ent.place(relx=0.40, rely=0.2,relwidth=0.45,relheight=0.95)
 
@@ -104,6 +95,7 @@ class CadConsulta:
         self.valor_box = textos(self.frame_lbs)
         self.valor_box.lb.configure(text='Valor:')
         self.valor_box.lb.pack(side=TOP, anchor='e',pady=2)
+        
  
         
     #---- Criando Entry's da tela ----#
@@ -131,7 +123,21 @@ class CadConsulta:
         )
         self.valor_ent.insert(0,'R$')
         self.valor_ent.pack(side=TOP, anchor='w',pady=6,padx=2)
-
+        
+        self.var_liberacao = BooleanVar()
+        self.var_liberacao.set(False)
+        self.liberacao_ent = Checkbutton(self.frame_ent,variable=self.var_liberacao)
+        self.liberacao_ent.config(
+            bg='#086788',
+            fg='white',
+            text='Aguardar Liberação',
+            font=('verdana',13,'bold'),
+            highlightbackground='#086788',
+            highlightcolor='#086788',
+            selectcolor='#086788'
+            
+        )
+        self.liberacao_ent.pack(side=TOP, anchor='center')
         
     # -------- Botao de cadastrar ------------
         
@@ -169,6 +175,8 @@ class CadConsulta:
         
         if txt == '':
             try:
+                if self.var_liberacao.get() == True:
+                    BD.alterar_status_pet(self.id_pet,'Não Liberado')
                 BD.Registrar_Atendimento(self.Servicos,self.Valor,self.Clinica,self.id_pet)
                 messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
                 self.root.destroy()
