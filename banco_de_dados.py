@@ -1,42 +1,58 @@
 import sqlite3
-from tkinter import messagebox
 
-from numpy import result_type
-"""
-    CREATE TABLE "Usuarios" (
-	"ID_usuario"	INTEGER NOT NULL UNIQUE,
-	"NOME_usuario"	TEXT NOT NULL,
-	"EMAIL_usuario"	TEXT NOT NULL,
-	"SENHA_usuario"	TEXT NOT NULL,
-	"TIPO_usuario"	TEXT NOT NULL,
-	PRIMARY KEY("ID_usuario" AUTOINCREMENT)
-    );
-"""
-
+# ---------------------------------------- CONECTAR -----------------------------------------
 def conectar():
+    """
+    Realizar conexão com o Banco de Dados
+    
+    Parâmetros:
+        Nenhum
+    Returns:
+        conn: Variável de conexão com o Banco de Dados
+        cursor: Variável para navegar pelo banco de dados executando os comandos em SQL
+    """
     conn = sqlite3.connect("Pet_Lov.db")
     cursor = conn.cursor()
     return conn,cursor
 
-# inserindo dados na tabela
+# ---------------------------------------- REGISTRAR ----------------------------------------
 def Registrar_Usuario(nome,email,senha,tipo):
     """
-    NOME_usuario,EMAIL_usuario,SENHA_usuario,TIPO_usuario
+    Realizar registro do Usuário no Banco de dados
+    
+    Parâmetros:
+        nome: Nome do Usuário
+        email: E-mail do Usuário 
+        senha: Senha do Usuário
+        tipo: Tipo de Usuário (privilégio Administrador ou Funcionário)
+    Returns:
+        nenhum
     """
-    conn,cursor = conectar()
+    conn,cursor = conectar() 
     cursor.execute("""
         INSERT INTO Usuarios (NOME_usuario,EMAIL_usuario,SENHA_usuario,TIPO_usuario)
         VALUES (?,?,?,?)
-    """, (nome,email,senha,tipo))
-    #
-    conn.commit()
-    conn.close()
+    """, (nome,email,senha,tipo)) 
 
-    #return id
+    conn.commit() 
+    conn.close() 
 
 def Registrar_Pessoa(nome,rua,num,bairro,cidade,tel,email,cpf,tipo):
     """
-    NOME_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,EMAIL_pessoa,CPF_pessoa,TIPO_CAD_pessoa
+    Realizar registro de Pessoa no Banco de dados
+    
+    Parâmetros:
+        nome: Nome do Usuário
+        rua: Nome da Rua de moradia
+        num: Número da Casa
+        bairro: Bairro de moradia 
+        cidade: Cidade de moradia
+        tel: Telefone do Usuário
+        email: E-mail do Usuário 
+        cpf: CPF do Usuário
+        tipo: Tipo de Usuário (Adotante, Voluntário ou Ambos)
+    Returns:
+        nenhum
     """
     conn,cursor = conectar()
     cursor.execute("""
@@ -49,7 +65,17 @@ def Registrar_Pessoa(nome,rua,num,bairro,cidade,tel,email,cpf,tipo):
 
 def Registrar_Pet(nome,raca,genero,idade,status,foto=''):
     """
-    NOME_pet,RACA_pet,GENERO_pet,IDADE_pet,STATUS_pet,FOTO_pet
+    Realizar registro do Pet no Banco de dados
+    
+    Parâmetros:
+        nome: Nome do Pet
+        raca: Raça do Pet 
+        genero: Gênero do Pet
+        idade: Idade do Pet 
+        status: Status do Pet (Liberado, Não Liberado)
+        foto: Diretório da foto do Pet. Por padrão é colocado como string vazia
+    Returns:
+        nenhum
     """
     conn,cursor = conectar()
     cursor.execute("""
@@ -62,7 +88,16 @@ def Registrar_Pet(nome,raca,genero,idade,status,foto=''):
 
 def Registrar_Lar_Temp(status,capacidade,utilizacao,endereco,cod_pessoa):
     """
-    STATUS_lar,CAPACIDADE_lar,UTILIZACAO_lar,ENDERECO_lar,fk_Cad_pessoa_COD_pessoa
+    Realizar registro do Lar Temporário no Banco de dados
+    
+    Parâmetros:
+        status: Status do Lar Temporário
+        capacidade: Capacidade do Lar Temporário 
+        utilizacao: Utilizacao do Lar Temporário
+        endereco: Endereço do Lar Temporário
+        cod_pessoa: ID(Código) do Usuráio responsável pelo Lar Temporário
+    Returns:
+        nenhum
     """
     conn,cursor = conectar()
     cursor.execute("""
@@ -75,11 +110,19 @@ def Registrar_Lar_Temp(status,capacidade,utilizacao,endereco,cod_pessoa):
 
 def Registrar_Clinica(nome,cnpj,tel,endereco):
     """
-    NOME_clini,CNPJ_clini,TELEFONE_clini,END_clini
+    Realizar registro de Clínica de Parceiros no Banco de dados
+    
+    Parâmetros:
+        nome: Nome da Clínica
+        cnpj: CNPJ da Clínica 
+        tel: Telefone da Clínica
+        endereco: Endereço da Clínica
+    Returns:
+        nenhum
     """
     conn,cursor = conectar()
     cursor.execute("""
-        INSERT INTO Clinica_vet (NOME_clini,CNPJ_clini,TELEFONE_clini,END_clini)
+        INSERT INTO Clinica_vet (NOME_clini,CNPJ_cli,TELEFONE_cli,END_cli)
         VALUES (?,?,?,?)
     """, (nome,cnpj,tel,endereco))
     
@@ -88,7 +131,15 @@ def Registrar_Clinica(nome,cnpj,tel,endereco):
     
 def Registrar_Adocao(data,status,cod_pet,cod_pessoa):
     """
-    DATA_adocao,STATUS_adocao,FK_Pet_COD_pet,FK_Cad_pessoa_COD_pessoa
+    Realizar registro de Adoção no Banco de dados
+    
+    Parâmetros:
+        data: Data de visita
+        status: Status da Adoção (Aprovada,Reprovada) 
+        cod_pet: ID(Código) do Pet a ser Adotado
+        cod_pessoa: ID(Código) do Usuário que irá Adotar
+    Returns:
+        nenhum
     """
     conn,cursor = conectar()
     cursor.execute("""
@@ -99,22 +150,17 @@ def Registrar_Adocao(data,status,cod_pet,cod_pessoa):
     conn.commit()
     conn.close()
 
-def Registrar_Hospedagem(periodo,cod_pet,cod_lar):
-    """
-    PERIODO_hosp,fk_Pet_COD_pet,fk_Lar_temporario_COD_larTemporario
-    """
-    conn,cursor = conectar()
-    cursor.execute("""
-        INSERT INTO Hospedagem_CONTEM (PERIODO_hosp,fk_Pet_COD_pet,fk_Lar_temporario_COD_larTemporario)
-        VALUES (?,?,?,?,?,?,?)
-    """, (periodo,cod_pet,cod_lar))
-    
-    conn.commit()
-    conn.close()
-
 def Registrar_Atendimento(historico,valor,cod_clini,cod_pet):
     """
-    HISTORICO_proced, VALOR_proced, fk_Clinica_vet__COD_clini, fk_pet_COD_pet
+    Realizar registro de Atendiemento em Clínica Parceira no Banco de dados
+    
+    Parâmetros:
+        historico: Serviços realizados
+        valor: Valor do serviço realizado
+        cod_clini: ID(Código) da Clínica onde foi feito o serviço
+        cod_pet: ID(Código) do Pet em questão
+    Returns:
+        nenhum
     """
     conn,cursor = conectar()
     cursor.execute("""
@@ -125,7 +171,18 @@ def Registrar_Atendimento(historico,valor,cod_clini,cod_pet):
     conn.commit()
     conn.close()
 
+# ---------------------------------------- VERIFICAR ----------------------------------------
 def Verificar_Login(email,senha):
+    """
+    Faz consulta no Banco de Dados com as informações de Login, 
+    para ver se o usuário está cadastrado ou não e se sua senha está correta
+    
+    Parâmetros:
+        email: E-mail de Login
+        senha: Senha de Login
+    Returns:
+        VerificaLogin: variável que irá conter o registro encontrado ou vazio se não encontrar nenhum registro
+    """
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT * FROM Usuarios 
@@ -136,15 +193,18 @@ def Verificar_Login(email,senha):
     
     return VerificaLogin
     
-    '''
-    try: 
-        if login in VerificaLogin and senha in VerificaLogin:
-            messagebox.showinfo(title="Login Info", message="Seja Bem Vindo!")
-    except:
-        messagebox.showerror(title="Login Info",message="Este usuário não está cadastrado!")
-    '''
-
 def Verificar_Admin(email,senha):
+    """
+    Faz consulta no Banco de Dados com as informações de Login, 
+    para ver se o usuário está cadastrado ou não e se sua senha está correta 
+    e se esse usuário possui privilégio de administrador 
+    
+    Parâmetros:
+        email: E-mail de Login
+        senha: Senha de Login
+    Returns:
+        VerificaLogin: variável que irá conter o registro encontrado ou vazio se não encontrar nenhum registro
+    """
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT * FROM Usuarios 
@@ -155,7 +215,16 @@ def Verificar_Admin(email,senha):
     
     return VerificaAdmin
 
+# ---------------------------------------- BUSCAS -------------------------------------------
 def buscar_pet(id):
+    """
+    Busca Pet específico cadastrado no banco de dados
+    
+    Parâmetros:
+        id: ID(Código) do Pet
+    Returns:
+        result: Registro do Pet  
+    """
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT * FROM Pet WHERE COD_pet = ? 
@@ -166,6 +235,16 @@ def buscar_pet(id):
     return result
 
 def buscar_historico_pet(id):
+    """
+    Busca Historico de Consultas de Pet específico cadastrado no banco de dados
+    
+    Parâmetros:
+        id: ID(Código) do Pet
+    Returns:
+        result: Registro do historico de consultas do Pet
+    
+    """
+    
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT * FROM Procedimento_ATENDER WHERE fk_Pet_COD_pet = ? 
@@ -184,6 +263,16 @@ def buscar_historico_pet(id):
     return result_pet
 
 def busca_clinicas():
+    """
+    Busca lista de clinicas cadastradas no banco de dados
+    
+    Parâmetros:
+        nenhum
+    Returns:
+        result: Lista com todas as clínicas cadastradas, sem repetição
+    
+    """
+    
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT DISTINCT NOME_clini, COD_clini FROM Clinica_vet
@@ -194,6 +283,16 @@ def busca_clinicas():
     return result
 
 def busca_situacoes_adocao():
+    """
+    Busca lista de status de Adoções cadastradas no banco de dados
+    
+    Parâmetros:
+        nenhum
+    Returns:
+        result: Lista com os Status de Adoçao existentes, sem repetição
+    
+    """
+    
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT DISTINCT STATUS_adocao FROM ADOTA_ADOCAO
@@ -204,6 +303,15 @@ def busca_situacoes_adocao():
     return result
 
 def busca_situacoes_lares():
+    """
+    Busca lista de status de Lares Temporários cadastradas no banco de dados
+    
+    Parâmetros:
+        nenhum
+    Returns:
+        result: Lista com os Status de Lar Temporário existentes, sem repetição
+    
+    """
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT DISTINCT STATUS_lar FROM Lar_temporario
@@ -214,6 +322,16 @@ def busca_situacoes_lares():
     return result
 
 def busca_situacoes_voluntarios():
+    """
+    Busca lista de Tipos de Pessoas cadastradas no banco de dados
+    
+    Parâmetros:
+        nenhum
+    Returns:
+        result: Lista com os Tipos de Pessoa existentes, sem repetição
+    
+    """
+    
     conn,cursor = conectar()
     cursor.execute(""" 
             SELECT DISTINCT TIPO_CAD_pessoa FROM Cad_pessoa
@@ -223,11 +341,21 @@ def busca_situacoes_voluntarios():
     
     return result
 
+# ---------------------------------------- LISTAGENS ----------------------------------------
 def mostrar_adotantes(filtros={}):
+    """
+    Busca os registros de Adotantes, passando filtros ou não
+    
+    Parâmetros:
+        (opcional) filtros: Tipo dicionário. Por padrão é colocado como vazio.
+    Returns:
+        lista: Lista com os registros de Adotantes, filtrados ou não
+    
+    """
+    
     conn,cursor = conectar()
     comando = "SELECT COD_pessoa,NOME_pessoa,CPF_pessoa,EMAIL_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,TIPO_CAD_pessoa FROM Cad_pessoa"
     
-    #print(comando)
     if filtros != {}:
         comando += " WHERE "
     
@@ -251,12 +379,21 @@ def mostrar_adotantes(filtros={}):
     return lista
 
 def mostrar_pets(filtros={},tipos_pets = 'todos'):
+    """
+    Busca os registros de Pets, passando filtros ou não
+    
+    Parâmetros:
+        (opcional) filtros: Tipo dicionário. Por padrão é colocado como vazio.
+    Returns:
+        lista: Lista com os registros de Pets, filtrados ou não
+    
+    """
+    
     conn,cursor = conectar()
     comando = "SELECT COD_pet,NOME_pet,RACA_pet,GENERO_pet,IDADE_pet,STATUS_pet FROM Pet"
     
     if tipos_pets != 'todos':
         comando += " WHERE STATUS_pet = 'Liberado' OR STATUS_pet = 'Não Liberado'"
-    #print(comando)
     
     if filtros != {}:
         if 'WHERE' not in comando:
@@ -274,25 +411,32 @@ def mostrar_pets(filtros={},tipos_pets = 'todos'):
         
         comando = comando[:-5]
     
-    #print(comando)
     cursor.execute(comando)
 
     lista = []
     for linha in cursor.fetchall():
         lista.append(linha)
-
-    #print(lista)
     
     conn.close()
     return lista
 
 def mostrar_lares(filtros={}):
+    """
+    Busca os registros de Lares Temporários, passando filtros ou não
+    
+    Parâmetros:
+        (opcional) filtros: Tipo dicionário. Por padrão é colocado como vazio.
+    Returns:
+        lista: Lista com os registros de Lares Temporários, filtrados ou não, mostrando o nome da Pessoa, não o id
+        lista_aux: Lista com os registros de Lares Temporários, filtrados ou não, mostrando tanto o nome da Pessoa quanto o id
+    
+    """
+    
     conn,cursor = conectar()
-    #'ID','NOME ADOTANTE','ENDERECO','STATUS','CAPACIDADE','UTILIZACAO'
-    #COD_larTemporario,STATUS_lar,CAPACIDADE_lar,UTILIZACAO_lar,ENDERECO_lar,fk_Cad_pessoa_COD_pessoa
+    
     comando = "SELECT COD_larTemporario,fk_Cad_pessoa_COD_pessoa,ENDERECO_lar,STATUS_lar,CAPACIDADE_lar,UTILIZACAO_lar FROM Lar_temporario"
     filtro_nome_pes = False
-    #print(comando)
+    
     if filtros != {}:
         comando += " WHERE "
     
@@ -332,38 +476,20 @@ def mostrar_lares(filtros={}):
         lista = lista_aux_2
 
     conn.close()
-    #print(lista,lista_aux)
+    
     return lista,lista_aux
 
-def alterar_status_pet(id,status):
-    conn,cursor = conectar()
-    cursor.execute(""" UPDATE  Pet 
-        SET STATUS_pet = ?  
-        WHERE COD_pet = ? """,(status,str(id)))
-    #result = cursor.fetchone()
-    conn.commit()
-    conn.close()
-
-def alterar_status_adocao(id,status):
-    conn,cursor = conectar()
-    cursor.execute(""" UPDATE  ADOTA_ADOCAO 
-        SET STATUS_adocao = ?  
-        WHERE COD_adocao = ? """,(status,str(id)))
-    #result = cursor.fetchone()
-    conn.commit()
-    conn.close()
-
-def alterar_status_lar(id,status):
-    conn,cursor = conectar()
-    cursor.execute(""" UPDATE  Lar_temporario 
-        SET STATUS_lar = ?  
-        WHERE COD_larTemporario = ? """,(status,str(id)))
-    #result = cursor.fetchone()
-    conn.commit()
-    conn.close()
-    
-
 def mostrar_adocoes(filtros={}):
+    """
+    Busca os registros de Adoções, passando filtros ou não
+    
+    Parâmetros:
+        (opcional) filtros: Tipo dicionário. Por padrão é colocado como vazio.
+    Returns:
+        lista: Lista com os registros de Adoções, filtrados ou não, mostrando o nome da Pessoa e O nome do Pet, não o id da Pessoa e o id do Pet
+        lista_aux: Lista com os registros de Adoções, filtrados ou não, mostrando tanto o nome da Pessoa e o nome do Pet quanto o id da Pessoa e o id do Pet    
+    """
+
     conn,cursor = conectar()
     comando = "SELECT COD_adocao, FK_Cad_pessoa_COD_pessoa, FK_Pet_COD_pet, DATA_adocao, STATUS_adocao FROM ADOTA_ADOCAO"
     filtro_nome_pet = False
@@ -390,8 +516,8 @@ def mostrar_adocoes(filtros={}):
     
     #2-COD PET  1-COD PESSOA
     
+    #ADICIONA NOME DAS PESSOAS E DOS PETS
     lista = []
-    #ADICIONA NOME DAS PESSOAS
     for item in lista_aux:
         
         cursor.execute("""
@@ -409,6 +535,7 @@ def mostrar_adocoes(filtros={}):
         except:
             lista.append((item[0],nome_pessoa,nome_pet,item[3],item[4]))
     
+    #FILTRA PELO NOME DO PET OU DA PESSOA CASO TENHA ESTE FILTRO
     lista_aux_2 = []
     if filtro_nome_pet == True:
         for item in lista:
@@ -427,3 +554,60 @@ def mostrar_adocoes(filtros={}):
     
     
     return lista,lista_aux
+
+# ---------------------------------------- ALTERAÇÕES ---------------------------------------
+def alterar_status_pet(id,status):
+    """
+    Altera status de um Pet específico
+        
+    Parâmetros:
+        id: ID(Código) do Pet que deseja mudar o status
+        status: Novo status que deseja para o Pet
+    Returns:
+        nenhum
+    
+    """
+    conn,cursor = conectar()
+    cursor.execute(""" UPDATE  Pet 
+        SET STATUS_pet = ?  
+        WHERE COD_pet = ? """,(status,str(id)))
+    
+    conn.commit()
+    conn.close()
+
+def alterar_status_adocao(id,status):
+    """
+    Altera status de uma Adoção
+        
+    Parâmetros:
+        id: ID(Código) da Adoção que deseja mudar o status
+        status: Novo status que deseja para a Adoção
+    Returns:
+        nenhum
+    """
+    
+    conn,cursor = conectar()
+    cursor.execute(""" UPDATE  ADOTA_ADOCAO 
+        SET STATUS_adocao = ?  
+        WHERE COD_adocao = ? """,(status,str(id)))
+    
+    conn.commit()
+    conn.close()
+
+def alterar_status_lar(id,status):
+    """
+    Altera status de um Lar Temporário
+        
+    Parâmetros:
+        id: ID(Código) do Lar Temporário que deseja mudar o status
+        status: Novo status que deseja para o Lar Temporário
+    Returns:
+        nenhum
+    """
+    conn,cursor = conectar()
+    cursor.execute(""" UPDATE  Lar_temporario 
+        SET STATUS_lar = ?  
+        WHERE COD_larTemporario = ? """,(status,str(id)))
+    
+    conn.commit()
+    conn.close()

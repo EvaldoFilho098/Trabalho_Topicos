@@ -171,7 +171,8 @@ class CadPet:
             fg = 'white',
             font = ('verdana',7,'bold underline')
         )
-        
+    
+    
     def selecionar_imagem(self):
         self.diretorio_img = dlg.askopenfilename()
         self.diretorio_img_lb.config(text = self.diretorio_img.split('/')[-1])

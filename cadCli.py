@@ -40,11 +40,12 @@ class opcoes:
 
 class CadCli:
     def __init__(self, master):
-        self.root = Toplevel(master)
-        #self.root = master
+        #self.root = Toplevel(master)
+        self.root = master
         self.tela()
         self.adicionar_elementos()
-        self.root.grab_set()
+        self.root.mainloop()
+        #self.root.grab_set()
     
     def tela(self):
         self.root.title("Love Pet")
@@ -65,18 +66,12 @@ class CadCli:
         self.frame_lbs = Frame(self.janela)
         self.frame_lbs.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_lbs.place(relx=0.05, rely=0.2,relwidth=0.35,relheight=0.95)
         
         self.frame_ent = Frame(self.janela)
         self.frame_ent.configure(
             bg="#086788",
-            #bd=4,
-            #highlightbackground="grey",
-            #highlightthickness='3px'
         )
         self.frame_ent.place(relx=0.40, rely=0.2,relwidth=0.45,relheight=0.95)
 
@@ -110,12 +105,6 @@ class CadCli:
         
         self.espaco_2box = textos(self.frame_lbs) # -------------------- Espaco
         self.espaco_2box.lb.pack(side=TOP, anchor='e')
-
-        self.tipo_box = textos(self.frame_lbs)
-        self.tipo_box.lb.configure(text='Serviços:')
-        #self.tipo_box.lb.pack(side=TOP, anchor='e',pady=5)
-        
-
         
     #---- Criando Entry's da tela ----#
         self.nome_ent = entrada(self.frame_ent)
@@ -129,23 +118,6 @@ class CadCli:
 
         self.endereco_ent = entrada(self.frame_ent)
         self.endereco_ent.et.pack(side=TOP, anchor='w',pady=6)
-        
-        '''
-        self.espaco_2ent = textos(self.frame_ent) # -------------------- Espaco
-        self.espaco_2ent.lb.pack(side=TOP, anchor='w',pady=2)
-        
-        self.var_tosa = BooleanVar()
-        self.servico_tosa = opcoes(self.frame_ent,self.var_tosa,'Tosa')
-        self.servico_tosa.op.pack(side=TOP, anchor='w')
-        
-        self.var_castracao = BooleanVar()
-        self.servico_castracao = opcoes(self.frame_ent,self.var_castracao,'Castração')
-        self.servico_castracao.op.pack(side=TOP, anchor='w')
-        
-        self.var_internacao = BooleanVar()
-        self.servico_internacao = opcoes(self.frame_ent,self.var_internacao,'Internação')
-        self.servico_internacao.op.pack(side=TOP, anchor='w')
-        '''
         
     # -------- Botao de cadastrar ------------
         
@@ -178,15 +150,15 @@ class CadCli:
         #self.Servicos = [self.var_tosa.get(),self.var_castracao.get(),self.var_internacao.get()]
         
         if txt == '':
-            try:
-                BD.Registrar_Clinica(self.Nome,self.CNPJ,self.Telefone,self.Endereco)
-                messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
-                self.root.destroy()
-            except:
-                messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
+            #try:
+            BD.Registrar_Clinica(self.Nome,self.CNPJ,self.Telefone,self.Endereco)
+            messagebox.showinfo(title="Cadastro Info",message="Cadastrado com Sucesso!!\n")
+            self.root.destroy()
+            #except:
+                #messagebox.showinfo(title="Cadastro Info",message="Houve Algum Problema!\n")
         else:
             messagebox.showinfo(title="Cadastro Info",message=txt)
             
-#window = Tk()  
-#cadastro = CadCli(window)
-#window.mainloop()
+window = Tk()  
+cadastro = CadCli(window)
+window.mainloop()
