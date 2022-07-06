@@ -354,6 +354,8 @@ def mostrar_adotantes(filtros={}):
     """
     
     conn,cursor = conectar()
+    
+    # Construção do Comando em SQL
     comando = "SELECT COD_pessoa,NOME_pessoa,CPF_pessoa,EMAIL_pessoa,END_rua,END_num,END_bairro,END_cidade,TELEFONE_pessoa,TIPO_CAD_pessoa FROM Cad_pessoa"
     
     if filtros != {}:
@@ -366,9 +368,11 @@ def mostrar_adotantes(filtros={}):
                 comando += str(f[0]) + " = '" + str(f[1]) + "' AND "
         
         comando = comando[:-5]
-        
+    
+    # Execução do Comando em SQL
     cursor.execute(comando)
 
+    # Construção da Lista para ficar de acordo com a saida desejada
     lista = []
     for linha in cursor.fetchall():
         endereco = linha[4] + ', ' + str(linha[5]) + ', ' + linha[6] + ', ' + linha[7]
@@ -384,12 +388,17 @@ def mostrar_pets(filtros={},tipos_pets = 'todos'):
     
     Parâmetros:
         (opcional) filtros: Tipo dicionário. Por padrão é colocado como vazio.
+        (opcional) tipos_pets: Diz se vão ser mostrados todos pets incluindo Adotados ou 
+                               apenas aqueles que estão Liberados ou não Para Adoção. Por padrão
+                               é colocado 'todos'
     Returns:
         lista: Lista com os registros de Pets, filtrados ou não
     
     """
     
     conn,cursor = conectar()
+    
+    # Construção do Comando em SQL
     comando = "SELECT COD_pet,NOME_pet,RACA_pet,GENERO_pet,IDADE_pet,STATUS_pet FROM Pet"
     
     if tipos_pets != 'todos':
@@ -411,8 +420,10 @@ def mostrar_pets(filtros={},tipos_pets = 'todos'):
         
         comando = comando[:-5]
     
+    # Execução do Comando em SQL
     cursor.execute(comando)
 
+    #Construção da Lista 
     lista = []
     for linha in cursor.fetchall():
         lista.append(linha)
@@ -434,6 +445,7 @@ def mostrar_lares(filtros={}):
     
     conn,cursor = conectar()
     
+    # Construção do Comando em SQL
     comando = "SELECT COD_larTemporario,fk_Cad_pessoa_COD_pessoa,ENDERECO_lar,STATUS_lar,CAPACIDADE_lar,UTILIZACAO_lar FROM Lar_temporario"
     filtro_nome_pes = False
     
@@ -448,8 +460,10 @@ def mostrar_lares(filtros={}):
         
         comando = comando[:-5]
         
+    # Execução do Comando em SQL
     cursor.execute(comando)
 
+    # Construção da Lista
     lista_aux = []
     for linha in cursor.fetchall():
         lista_aux.append(linha)
@@ -491,6 +505,8 @@ def mostrar_adocoes(filtros={}):
     """
 
     conn,cursor = conectar()
+    
+    # Construção do Comando em SQL
     comando = "SELECT COD_adocao, FK_Cad_pessoa_COD_pessoa, FK_Pet_COD_pet, DATA_adocao, STATUS_adocao FROM ADOTA_ADOCAO"
     filtro_nome_pet = False
     filtro_nome_pessoa = False
@@ -508,8 +524,10 @@ def mostrar_adocoes(filtros={}):
         
         comando = comando[:-5]
     
+    # Execução do Comando em SQL
     cursor.execute(comando)
 
+    # Construção da Lista para ficar de acordo com a saida desejada
     lista_aux = []
     for linha in cursor.fetchall():
         lista_aux.append(linha)
